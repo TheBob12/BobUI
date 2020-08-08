@@ -211,42 +211,50 @@ function BobUI_HeartEssenceSlotMixin:OnLoad()
 	self:RegisterForDrag("LeftButton");
 end
 
-function BobUI_HeartEssenceSlotMixin:OnClick()
-	if SELECTED_HEART_ESSENCE_SLOT ~= nil then SELECTED_HEART_ESSENCE_SLOT.Arrow:Hide() end
-
-	if SELECTED_HEART_ESSENCE_SLOT == self then
-		SELECTED_HEART_ESSENCE_SLOT.Arrow:Hide();
-		SELECTED_HEART_ESSENCE_SLOT:GetParent().essenceList:Hide()
-		SELECTED_HEART_ESSENCE_SLOT = nil
-	else
-		SELECTED_HEART_ESSENCE_SLOT = self
-		SELECTED_HEART_ESSENCE_SLOT.Arrow:Show();
-		SELECTED_HEART_ESSENCE_SLOT:GetParent().essenceList:Show()
-	end
-
-	local TalentFrame = self:GetParent()
-
-	local TalentFrameHeight = ((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2)) * 7) + BobUI_Settings["FontSizeBody"] + 30 + 2
-	
-	if TalentFrame.essenceList:IsShown() then
-		TalentFrame:SetSize(((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) + (((BobUI_Settings["BorderSize"] * 2) + BobUI_Settings["SpellIconSize"]) * 3 + 4)) + 10 + 20), TalentFrameHeight)
-	else
-		TalentFrame:SetSize(TalentFrame.titleFrame.category:GetWidth() + 10, TalentFrameHeight)
-	end
-
-	resizeBackground() 
-end
-
 function BobUI_HeartEssenceSlotMixin:OnDragStart()
     if self.milestoneID then
         local spellID = C_AzeriteEssence.GetMilestoneSpell(self.milestoneID);
-        
+
         if spellID then
             PickupSpell(spellID);
         end
     end
 end
 
+function BobUI_HeartEssenceSlotMixin:OnClick(mouseButton)
+	if mouseButton == "LeftButton" then
+		local linkedToChat = false;
+		if ( IsModifiedClick("CHATLINK") ) then
+			linkedToChat = HandleModifiedItemClick(C_AzeriteEssence.GetEssenceHyperlink(self.essenceID, self.rank));
+		end
+		if ( not linkedToChat ) then
+            if SELECTED_HEART_ESSENCE_SLOT ~= nil then SELECTED_HEART_ESSENCE_SLOT.Arrow:Hide() end
+
+            if SELECTED_HEART_ESSENCE_SLOT == self then
+                SELECTED_HEART_ESSENCE_SLOT.Arrow:Hide();
+                SELECTED_HEART_ESSENCE_SLOT:GetParent().essenceList:Hide()
+                SELECTED_HEART_ESSENCE_SLOT = nil
+            else
+                SELECTED_HEART_ESSENCE_SLOT = self
+                SELECTED_HEART_ESSENCE_SLOT.Arrow:Show();
+                SELECTED_HEART_ESSENCE_SLOT:GetParent().essenceList:Show()
+            end
+        
+            local TalentFrame = self:GetParent()
+        
+            local TalentFrameHeight = ((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2)) * 7) + BobUI_Settings["FontSizeBody"] + 30 + 2
+            
+            if TalentFrame.essenceList:IsShown() then
+                TalentFrame:SetSize(((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) + (((BobUI_Settings["BorderSize"] * 2) + BobUI_Settings["SpellIconSize"]) * 3 + 4)) + 10 + 20), TalentFrameHeight)
+            else
+                TalentFrame:SetSize(TalentFrame.titleFrame.category:GetWidth() + 10, TalentFrameHeight)
+            end
+        
+            resizeBackground() 
+		end
+	end
+
+end
 
 BobUI_HeartEssenceButtonMixin = {}
 
@@ -281,7 +289,7 @@ function BobUI_HeartEssenceButtonMixin:OnClick(mouseButton)
 			if SELECTED_HEART_ESSENCE_SLOT.milestoneID ~= nil then
 				C_AzeriteEssence.ActivateEssence(self.essenceID, SELECTED_HEART_ESSENCE_SLOT.milestoneID)
 				
-				SELECTED_HEART_ESSENCE_SLOT:OnClick()
+				SELECTED_HEART_ESSENCE_SLOT:OnClick("LeftButton")
 			end
 		end
 	elseif mouseButton == "RightButton" then
