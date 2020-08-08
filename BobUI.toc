@@ -4,6 +4,8 @@
 ## Author: The Bob
 ## SavedVariables: TalentPresets, HeartPresets, BobUI_Settings
 
+XML/EditBoxHandlers.lua
+
 Lua/HelperFunctions.lua
 Lua/Settings.lua
 Lua/Design.lua

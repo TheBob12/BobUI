@@ -18,11 +18,8 @@ function displayHeartEssenceSlots()
     local EssenceFrame = BobUI_PlayerTalentFrameTalentsEssences
 
     --local spellButtonSizeWithBorders = BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) -- should be a global. 
-
     --local EssenceFrameWidth = max(spellButtonSizeWithBorders + 30, EssenceFrame.titleFrame.category:GetWidth() + 10)
-
     --local EssenceFrameHeight = ((spellButtonSizeWithBorders + 10) * 4) + EssenceFrame.titleFrame.category:GetHeight() - 10
-
     --local EssenceListFrameHeight = 0
     --local EssenceListFrameWidth = 0
 

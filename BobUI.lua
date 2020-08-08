@@ -1,4 +1,5 @@
 local BobUI = ((BobUI == nil) and CreateFrame("Frame") or BobUI)
+HideFrames = CreateFrame("Frame", UIParent) -- hidden frame to inherit blizzard spellbook/talent frames as children, to hide them.
 
 BobUI:RegisterEvent("PLAYER_ENTERING_WORLD")
 BobUI:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
@@ -57,8 +58,10 @@ function BobUI_events(self, event, ...)
         BobUI_PlayerTalentFrameTalents_OnLoad()
         BobUI_PvpTalentFrame_OnLoad()
 
-        BobUI_Globals["LOADED"] = true
-        
+        if BobUI_Globals["LOADED"] == false then
+            BobUI_AbilityTab_OnLoad()
+            BobUI_Globals["LOADED"] = true
+        end
         BobUI_TabTitle.text:SetText(SPECIALIZATION .. ": " .. BobUI_Globals["CHARACTER"]["currentSpecializationName"])
     elseif event == "SPELLS_CHANGED" then
         if BobUI_AbilityTab:IsShown() then
@@ -81,7 +84,71 @@ function BobUI_events(self, event, ...)
     elseif event == "AZERITE_ESSENCE_ACTIVATED" then
 		setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
     end
+end
 
+function BobUI_AbilityTab_OnLoad()
+	tinsert(UISpecialFrames, "BobUI_AbilityTab")
+	tinsert(UISpecialFrames, "BobUI_SettingsFrame")
+	HideFrames:Hide()
+
+	SpellBookFrame:SetParent(HideFrames)
+
+	SpellBookFrame:SetScript("OnShow", function()
+		if CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false) then
+			if SpellBookFrame:GetParent() ~= HideFrames then SpellBookFrame:SetParent(HideFrames) end
+			SpellBookFrame:UnregisterAllEvents();
+		end
+	end)
+	
+
+	hooksecurefunc("TalentFrame_LoadUI", function()
+		PlayerTalentFrame:SetParent(HideFrames)
+		PlayerTalentFrame:UnregisterAllEvents();
+	end)
+
+	hooksecurefunc("ToggleSpellBook", function(bookType)
+		if bookType == "professions" then
+			if BobUI_Globals["SPELL_BOOK_TYPE"] == "spell" then
+				SpecButton7:Click()
+				if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
+			end
+		else
+			if BobUI_Globals["SPELL_BOOK_TYPE"] == "profession" then
+				_G["SpecButton"..(GetSpecialization() + 1)]:Click()
+				if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
+			end
+			-- if shown professions, then go to specs spell book
+		end
+	end)
+
+	hooksecurefunc("ShowUIPanel", function(frame)
+		local frameName = frame
+		if type(frame) == "table" then frameName = frame:GetName() end
+
+		if frame ~= nil then
+			if ((frameName == "SpellBookFrame" and CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false)) or (frameName == "PlayerTalentFrame")) then
+				if frame:IsShown() then HideUIPanel(frame) end
+				toggleSpellBook()
+			else
+				if frameName == "SpellBookFrame" then
+					SpellBookFrame:SetParent(UIParent)
+					SpellBookFrame.bookType = BOOKTYPE_SPELL;
+					SpellBookFrame_Update();
+				end
+			end
+		end
+
+	end)
+
+	if BobUI_Globals["VIEWED_SPELL_BOOK"] == nil then
+		BobUI_Globals["VIEWED_SPELL_BOOK"] = 2
+		BobUI_Globals["VIEWED_TAB_ID"] = GetSpecialization() + 1
+	end
+	
+
+	BobUI_toggleTabPage(BobTabPage1)
+
+	
 
 end
 

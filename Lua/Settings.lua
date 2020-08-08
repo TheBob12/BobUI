@@ -36,13 +36,13 @@ BobUI_Settings_Recommended = {
 		["r"] = 0.1, 
 		["g"] = 0.1, 
 		["b"] = 0.1, 
-		["a"] = 1
+		["a"] = 1.0
 	},
 	["TextColor"] = {
 		["r"] = 0.8, 
 		["g"] = 0.8, 
 		["b"] = 0.8, 
-		["a"] = 1
+		["a"] = 1.0
     },
     ["SpellButtonsPerRow"] = 9,
     ["AzeriteButtonsPerRow"] = 3,

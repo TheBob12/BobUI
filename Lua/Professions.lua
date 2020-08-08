@@ -17,10 +17,6 @@ function BobUI_FormatProfession(PROFESSION_INDEX, PROFESSION_ID)
 		["specializationOffset"] = specializationOffset,
 		["skillLineName"] = skillLineName
 	}
-
-	--[[if (PROFESSION_INDEX == 1) then -- doesn't belong in this function. 
-		BobUI_specButtons.specButton7.specIcon:SetTexture(texture);
-	end]]--
 end
 
 function BobUI_UpdateProfessions()
@@ -38,4 +34,9 @@ function BobUI_UpdateProfessions()
 		lastRefreshed = currentTime
 	end
 
+	if BobUI_Globals["PROFESSIONS"][1] ~= nil then
+		BobUI_specButtons.specButton7.specIcon:SetTexture(BobUI_Globals["PROFESSIONS"][1]["texture"])
+	else
+		BobUI_specButtons.specButton7.specIcon:SetTexture("Interface/Icons/TRADE_ARCHAEOLOGY_OGRE2HANDEDHAMMER");
+	end
 end

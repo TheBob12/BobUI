@@ -116,11 +116,9 @@ function setupColorButton(self)
 		end
 	end
 	
-	colorButton.cancelFunc = function()
-		if colorButton.r ~= nil and colorButton.g ~= nil and colorButton.b ~= nil then
-
-			colorButton:SetColorRGBA(ColorPickerFrame.previousValues.r, ColorPickerFrame.previousValues.g, ColorPickerFrame.previousValues.b, ColorPickerFrame.previousValues.opacity)
-		
+	colorButton.cancelFunc = function(previousValues)
+		if ( previousValues.r ) then
+			colorButton:SetColorRGBA(previousValues.r, previousValues.g, previousValues.b, 1 - previousValues.opacity)
 		end
 	end
 

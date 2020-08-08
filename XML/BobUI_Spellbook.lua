@@ -1,41 +1,4 @@
 -- BobUI_Spellbook.lua will eventually be removed and split up into relevant files.
-HideFrames = CreateFrame("Frame", UIParent)
-
-function editBox_OnKeyUp(self, event)
-	if event == "ESCAPE" then
-		self:ClearFocus()
-	end
-end
-
-function editBoxKeyDown(self, event)
-	local editBoxText = self:GetText():gsub('[^0-9+.]', '')
-
-	if event == "ENTER" then
-		if editBoxText == "" or ((self.settingName == "FontSizeHeader" or self.settingName == "FontSizeBody") and tonumber(editBoxText) < 1) then
-			if self.settingName == "Scaling" then 
-				editBoxText = 768 / string.match(GetCVar("gxWindowedResolution" ), "%d+x(%d+)")
-			else
-				editBoxText = BobUI_Settings_Recommended[self.settingName]
-			end
-		end
-		
-		self.settingValue = editBoxText
-		self:SetText(editBoxText)
-		applySetting(self)
-		self:ClearFocus()
-
-
-		if BobUI_AbilityTab:IsShown() then BobUI_AbilityTab:Hide(); BobUI_AbilityTab:Show() end
-	end
-end
-
-function applySetting(self) 
-	BobUI_Settings[self.settingName] = self.settingValue
-
-	if self.settingName == "Scaling" then
-		BobUI_AbilityTab:SetScale(BobUI_Settings["Scaling"])
-	end
-end
 
 
 function GetNumSpellsForSpellBook(SPELL_BOOK)
@@ -211,10 +174,10 @@ function AssignScriptsToButtons(button, i, offset, missingOnActionBar, spellID, 
 	end)
 
 	button:SetScript("OnDragStart", function()
-		if spellID and BobUI_Globals["SPELL_BOOK_TYPE"] ~= "pet" then
-			PickupSpell(getCorrectSpellIDForDrag(spellID))
-		else
-			if not IsPassiveSpell(i+offset, BobUI_Globals["SPELL_BOOK_TYPE"]) then
+		if not IsPassiveSpell(i+offset, BobUI_Globals["SPELL_BOOK_TYPE"]) then -- To do: Shouldn't be allowed to PickupSpell from other specs.
+			if spellID and BobUI_Globals["SPELL_BOOK_TYPE"] ~= "pet" then
+				PickupSpell(getCorrectSpellIDForDrag(spellID))
+			else
 				PickupSpellBookItem(i+offset, BobUI_Globals["SPELL_BOOK_TYPE"])
 			end
 		end
@@ -240,7 +203,7 @@ function AssignScriptsToButtons(button, i, offset, missingOnActionBar, spellID, 
 		else
 			if spellName == "Defensive" then
 				button:SetAttribute("type1", "macro");
-				button:SetAttribute("macrotext", "/petdefensive"); -- doesn't work, idk how to fix.
+				button:SetAttribute("macrotext", "/petdefensive"); -- doesn't work, not sure how to fix. 
 			elseif spellName == "Move To" then
 				button:SetAttribute("type1", "macro");
 				button:SetAttribute("macrotext", "/petmoveto");
@@ -742,7 +705,6 @@ function SpecButton_OnShow(self)
 			self:Hide();
 		end
 	elseif self:GetID() == 7 then
-			self.specIcon:SetTexture("Interface/Icons/TRADE_ARCHAEOLOGY_OGRE2HANDEDHAMMER");
 			self.roleIcon:Hide();
 			self.tooltip = TRADE_SKILLS
 	elseif self:GetID() == 8 then
@@ -848,74 +810,6 @@ function CliqueShown()
 
 	return false
 end
-
-
-function BobUI_AbilityTab_OnLoad()
-	tinsert(UISpecialFrames, "BobUI_AbilityTab")
-	tinsert(UISpecialFrames, "BobUI_SettingsFrame")
-	HideFrames:Hide()
-
-	SpellBookFrame:SetParent(HideFrames)
-
-	SpellBookFrame:SetScript("OnShow", function()
-		if CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false) then
-			if SpellBookFrame:GetParent() ~= HideFrames then SpellBookFrame:SetParent(HideFrames) end
-			SpellBookFrame:UnregisterAllEvents();
-		end
-	end)
-	
-
-	hooksecurefunc("TalentFrame_LoadUI", function()
-		PlayerTalentFrame:SetParent(HideFrames)
-		PlayerTalentFrame:UnregisterAllEvents();
-	end)
-
-	hooksecurefunc("ToggleSpellBook", function(bookType)
-		if bookType == "professions" then
-			if BobUI_Globals["SPELL_BOOK_TYPE"] == "spell" then
-				SpecButton7:Click()
-				if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
-			end
-		else
-			if BobUI_Globals["SPELL_BOOK_TYPE"] == "profession" then
-				_G["SpecButton"..(GetSpecialization() + 1)]:Click()
-				if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
-			end
-			-- if shown professions, then go to specs spell book
-		end
-	end)
-
-	hooksecurefunc("ShowUIPanel", function(frame)
-		local frameName = frame
-		if type(frame) == "table" then frameName = frame:GetName() end
-
-		if frame ~= nil then
-			if ((frameName == "SpellBookFrame" and CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false)) or (frameName == "PlayerTalentFrame")) then
-				if frame:IsShown() then HideUIPanel(frame) end
-				toggleSpellBook()
-			else
-				if frameName == "SpellBookFrame" then
-					SpellBookFrame:SetParent(UIParent)
-					SpellBookFrame.bookType = BOOKTYPE_SPELL;
-					SpellBookFrame_Update();
-				end
-			end
-		end
-
-	end)
-
-	if BobUI_Globals["VIEWED_SPELL_BOOK"] == nil then
-		BobUI_Globals["VIEWED_SPELL_BOOK"] = 2
-		BobUI_Globals["VIEWED_TAB_ID"] = GetSpecialization() + 1
-	end
-	
-
-	BobUI_toggleTabPage(BobTabPage1)
-
-	
-
-end
-
 
 function BobUI_toggleTabPage(shown)
 	shown:Show()

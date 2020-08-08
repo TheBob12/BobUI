@@ -1540,7 +1540,6 @@
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad function="BobUI_AbilityTab_OnLoad" />
 			<OnShow function="BobUI_AbilityTab_OnShow" />
 			<OnHide function="BobUI_AbilityTab_OnHide" />
 		</Scripts>
