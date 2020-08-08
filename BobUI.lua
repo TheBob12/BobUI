@@ -57,11 +57,13 @@ function BobUI_events(self, event, ...)
         BobUI_UpdateProfessions()
         BobUI_PlayerTalentFrameTalents_OnLoad()
         BobUI_PvpTalentFrame_OnLoad()
+        setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
 
         if BobUI_Globals["LOADED"] == false then
             BobUI_AbilityTab_OnLoad()
             BobUI_Globals["LOADED"] = true
         end
+        
         BobUI_TabTitle.text:SetText(SPECIALIZATION .. ": " .. BobUI_Globals["CHARACTER"]["currentSpecializationName"])
     elseif event == "SPELLS_CHANGED" then
         if BobUI_AbilityTab:IsShown() then

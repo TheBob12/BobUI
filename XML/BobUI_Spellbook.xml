@@ -496,8 +496,8 @@
 			<OnLeave function="GameTooltip_Hide"/>
 			<OnShow method="OnShow"/>
 			<!--OnHide method="OnHide"/>
-			<OnEvent method="OnEvent"/>
-			<OnDragStart method="OnDragStart"/-->
+			<OnEvent method="OnEvent"/-->
+			<OnDragStart method="OnDragStart"/>
 			<OnLoad method="OnLoad"/>
 			<OnClick method="OnClick"/>
 		</Scripts>
