@@ -50,9 +50,6 @@ known bugs:
  * Occasionally closes other windows like guild window or group finder when opened
 
  * Borders are off or separators missing. Fixed by changing the scaling setting.
-
- * Errors while entering load screen (by teleporting for example), while having Bob UI opened. This is caused by loading things before they're available. Will be fixed next release.
-
  
 
  Work in progress (By priority):
@@ -62,6 +59,4 @@ known bugs:
  * Open/Close/remain open during combat
 
  * auto "equip" talent presets based on zone (This is already possible using weak auras.)
-
- * Errors while entering load screen
 
