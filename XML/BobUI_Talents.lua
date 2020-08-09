@@ -1514,12 +1514,7 @@ function TalentPresets_OnLoad()
 		BobUI_PRESETS_LOADED = true
 
 		hooksecurefunc("EquipmentManager_EquipSet", function(setID) 
-			for i=1, #BobTabPage2ScrollFrame.buttons do
-				if _G["PresetButton"..i]:GetText() == select(1, C_EquipmentSet.GetEquipmentSetInfo(setID)) then
-					TalentPresets_OnClick(_G["PresetButton"..i])
-					TalentPresets_OnDoubleClick(_G["PresetButton"..i])
-				end
-			end
+			BobUI_activatePreset(select(1, C_EquipmentSet.GetEquipmentSetInfo(setID)), true, true)
 		end)
 	end
 end
@@ -1539,27 +1534,9 @@ function TalentPresets_OnDoubleClick(self)
 	local specializationID, specializationName = GetSpecializationInfo(GetSpecialization())
 	if SELECTED_PRESET_BUTTON.currentSpecID ~= specializationID then return end
 
-	for i=1,#SELECTED_PRESET_BUTTON.talents do
-		_G["BobUI_PlayerTalentFrameTalentsTalentRow"..i.."Talent"..SELECTED_PRESET_BUTTON.talents[i][1]]:Click()
-	end
-
 	local setName = SELECTED_PRESET_BUTTON:GetText();
 
-	for k,v in pairs(C_EquipmentSet.GetEquipmentSetIDs()) do
-			EquipmentSetName, EquipmentSetTexture = C_EquipmentSet.GetEquipmentSetInfo(v)
-
-			if EquipmentSetName == setName then
-				C_EquipmentSet.UseEquipmentSet(v)
-			end
-	end
-
-	if #button.essences ~= 0 then
-		for k,v in pairs(button.essences) do
-			if v[1] ~= nil then
-				C_AzeriteEssence.ActivateEssence(getEssenceInfoByName(v[2]), v[1])
-			end
-		end
-	end
+	BobUI_activatePreset(setName, true, false)
 end
 
 

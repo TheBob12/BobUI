@@ -1,6 +1,7 @@
 BOBUI_DEV_MESSAGES = true;
 
 BobUI_Globals = {
+	["ADDON_PREFIX"] = "Bob UI",
     ["VIEWED_SPELL_BOOK"] = 2,
     ["VIEWED_SPELL_BOOK_NUM_SPELLS"] = nil;
     ["SHOW_BOBUI_ABILITY_TAB_AFTER_COMBAT"] = false,

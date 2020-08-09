@@ -1,3 +1,7 @@
+function handleChatAndMacroLinks(type, relevantID)
+	
+end
+
 function getCorrectSpellIDForDrag(spellID)
 	
 	if set(53271, 62305, 272682, 264735, 281195, 264667, 272679)[spellID] then

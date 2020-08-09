@@ -27,28 +27,26 @@ end
 
 
 function modifiedClick(spellIndex, button)
-	if ( IsModifiedClick() ) then
-		if ( IsModifiedClick("CHATLINK") ) then
-			if ( MacroFrameText and MacroFrameText:HasFocus() ) then
-				local spellName, subSpellName = GetSpellBookItemName(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]);
-				if ( spellName and not IsPassiveSpell(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]) ) then
-					if ( subSpellName and (strlen(subSpellName) > 0) ) then
-						ChatEdit_InsertLink(spellName.."("..subSpellName..")");
-					else
-						ChatEdit_InsertLink(spellName);
-					end
-				end
-				return;
-			else
-				local tradeSkillLink, tradeSkillSpellID = GetSpellTradeSkillLink(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]);
-				if ( tradeSkillSpellID ) then
-					ChatEdit_InsertLink(tradeSkillLink);
+	if ( IsModifiedClick("CHATLINK") ) then
+		if ( MacroFrameText and MacroFrameText:HasFocus() ) then
+			local spellName, subSpellName = GetSpellBookItemName(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]);
+			if ( spellName and not IsPassiveSpell(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]) ) then
+				if ( subSpellName and (strlen(subSpellName) > 0) ) then
+					ChatEdit_InsertLink(spellName.."("..subSpellName..")");
 				else
-					local spellLink = GetSpellLink(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]);
-					ChatEdit_InsertLink(spellLink);
+					ChatEdit_InsertLink(spellName);
 				end
-				return;
 			end
+			return;
+		else
+			local tradeSkillLink, tradeSkillSpellID = GetSpellTradeSkillLink(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]);
+			if ( tradeSkillSpellID ) then
+				ChatEdit_InsertLink(tradeSkillLink);
+			else
+				local spellLink = GetSpellLink(spellIndex, BobUI_Globals["SPELL_BOOK_TYPE"]);
+				ChatEdit_InsertLink(spellLink);
+			end
+			return;
 		end
 	end
 end
