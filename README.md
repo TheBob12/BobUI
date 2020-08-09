@@ -3,7 +3,7 @@ Bob UI is a new project that aims to simplify the existing frames and reduce the
 
 Currently, Bob UI starts with an alpha build that replaces spellbook and talents frames with a single frame, that contains the ability to change specs and talents and interact with abilities.
 
-##Instructions:
+## Instructions:
 
  * To open/close the new spell book, you use the keys assigned to open the native spell book or talents frame
 
@@ -15,7 +15,7 @@ Currently, Bob UI starts with an alpha build that replaces spellbook and talents
 
  
 
-##Talent & heart essence preset instructions: 
+## Talent & heart essence preset instructions: 
 
  * Right click the talents to the right, to change the talents in your currently selected preset.
 
@@ -27,7 +27,7 @@ Currently, Bob UI starts with an alpha build that replaces spellbook and talents
 
  
 
-##Settings
+## Settings
 
  * to reset a setting to default, clear the textbox for that setting and hit enter.
 
@@ -45,7 +45,7 @@ Please comment with feature requests and bug reports, no matter the size.
 
  
 
-##known bugs:
+## known bugs:
 
  * Occasionally closes other windows like guild window or group finder when opened
 
