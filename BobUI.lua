@@ -56,8 +56,11 @@ function BobUI_events(self, event, ...)
         
         BobUI_UpdateProfessions()
         BobUI_PlayerTalentFrameTalents_OnLoad()
-        BobUI_PvpTalentFrame_OnLoad()
-        setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
+		BobUI_PvpTalentFrame_OnLoad()
+		
+		if showHeartEssences() then
+        	setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
+		end
 
         if BobUI_Globals["LOADED"] == false then
             BobUI_AbilityTab_OnLoad()
@@ -80,11 +83,15 @@ function BobUI_events(self, event, ...)
     elseif event == "PLAYER_EQUIPMENT_CHANGED" then
         if BobUI_Globals["LOADED"] == true then
             if BobUI_AbilityTab:IsShown() then
-                displayHeartEssenceSlots()
+				if showHeartEssences() then
+					displayHeartEssenceSlots()
+				end
             end
         end
     elseif event == "AZERITE_ESSENCE_ACTIVATED" then
-		setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
+		if showHeartEssences() then
+			setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
+		end
     end
 end
 
