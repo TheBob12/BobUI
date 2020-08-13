@@ -172,7 +172,6 @@ function AssignScriptsToButtons(button, i, offset, missingOnActionBar, spellID, 
 	end)
 
 	button:SetScript("OnDragStart", function()
-		print(button, i, offset, missingOnActionBar, spellID, spellName, actionID, autoCastAllowed)
 		 -- To do: Shouldn't be allowed to PickupSpell from other specs.
 			if spellID and BobUI_Globals["SPELL_BOOK_TYPE"] ~= "pet" then
 				if i+offset ~= 0 then
