@@ -1,6 +1,14 @@
+function isHeartEssenceOwned() 
+	if C_AzeriteItem.FindActiveAzeriteItem() ~= nil then
+		return true
+	else
+		return false
+	end
+end
+
 function showHeartEssences()
 	
-	if C_AzeriteItem.FindActiveAzeriteItem() == nil then 
+	if not isHeartEssenceOwned() then 
 		return false
 	else
 		if C_AzeriteItem.GetPowerLevel(C_AzeriteItem.FindActiveAzeriteItem()) < 50 then 

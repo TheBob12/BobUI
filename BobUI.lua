@@ -83,13 +83,13 @@ function BobUI_events(self, event, ...)
     elseif event == "PLAYER_EQUIPMENT_CHANGED" then
         if BobUI_Globals["LOADED"] == true then
             if BobUI_AbilityTab:IsShown() then
-				if showHeartEssences() then
+				if isHeartEssenceOwned() then
 					displayHeartEssenceSlots()
 				end
             end
         end
     elseif event == "AZERITE_ESSENCE_ACTIVATED" then
-		if showHeartEssences() then
+		if isHeartEssenceOwned() then
 			setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
 		end
     end

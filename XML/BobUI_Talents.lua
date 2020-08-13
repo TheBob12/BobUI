@@ -579,7 +579,18 @@ end
 
 function BobUI_PlayerTalentFrameTalents_OnLoad()
 	local _, class = UnitClass("player");
-	local talentLevels = CLASS_TALENT_LEVELS[class] or CLASS_TALENT_LEVELS["DEFAULT"];
+	local TALENT_LEVELS = {}
+
+	if CLASS_TALENT_LEVELS == nil then
+		for i=1,7 do
+			if TALENT_LEVELS[class] == nil then TALENT_LEVELS[class] = {} end
+			TALENT_LEVELS[class][i] = select(3, GetTalentTierInfo(i,1))
+		end
+	else
+		TALENT_LEVELS = CLASS_TALENT_LEVELS
+	end
+
+	local talentLevels = TALENT_LEVELS[class] or TALENT_LEVELS["DEFAULT"];
 	for i=1, MAX_TALENT_TIERS do
 		BobUI_PlayerTalentFrameTalents["tier"..i].level:SetText(talentLevels[i]);
 	end
@@ -780,14 +791,20 @@ function BobUI_PvpTalentFrameMixin:ClearPendingRemoval()
 end
 
 function BobUI_PvpTalentFrameMixin:Update()
-	if (not C_PvP.IsWarModeFeatureEnabled() or UnitLevel("player") < SHOW_PVP_TALENT_LEVEL) then
-		self:Hide();
-		self.currentWarModeState = "hidden";
-		return;
+	local PVP_TALENT_LEVEL
+	if SHOW_PVP_TALENT_LEVEL == nil then 
+		PVP_TALENT_LEVEL = C_SpecializationInfo.GetPvpTalentSlotUnlockLevel(1)
 	else
-		self.currentWarModeState = "shown";
+		PVP_TALENT_LEVEL= SHOW_PVP_TALENT_LEVEL
 	end
 
+		if (not C_PvP.IsWarModeFeatureEnabled() or UnitLevel("player") < PVP_TALENT_LEVEL) then
+			self:Hide();
+			self.currentWarModeState = "hidden";
+			return;
+		else
+			self.currentWarModeState = "shown";
+		end
 	for _, slot in pairs(self.Slots) do
 		slot:Update();
 	end

@@ -172,13 +172,19 @@ function AssignScriptsToButtons(button, i, offset, missingOnActionBar, spellID, 
 	end)
 
 	button:SetScript("OnDragStart", function()
-		if not IsPassiveSpell(i+offset, BobUI_Globals["SPELL_BOOK_TYPE"]) then -- To do: Shouldn't be allowed to PickupSpell from other specs.
+		print(button, i, offset, missingOnActionBar, spellID, spellName, actionID, autoCastAllowed)
+		 -- To do: Shouldn't be allowed to PickupSpell from other specs.
 			if spellID and BobUI_Globals["SPELL_BOOK_TYPE"] ~= "pet" then
-				PickupSpell(getCorrectSpellIDForDrag(spellID))
+				if i+offset ~= 0 then
+					if not IsPassiveSpell(i+offset, BobUI_Globals["SPELL_BOOK_TYPE"]) then
+						PickupSpell(getCorrectSpellIDForDrag(spellID))
+					end
+				else
+					PickupSpell(getCorrectSpellIDForDrag(spellID))
+				end
 			else
 				PickupSpellBookItem(i+offset, BobUI_Globals["SPELL_BOOK_TYPE"])
 			end
-		end
 	end)
 
 	button:RegisterEvent("SPELLS_CHANGED")
@@ -225,15 +231,14 @@ function toggleAutocastShine(button, bIndex)
 	local autoCastableTexture = _G[button:GetName().."AutoCastable"];
 	local petAutoCastShine = _G[button:GetName().."Shine"];
 	
+	autoCastableTexture:Hide();
+
 	if BobUI_Globals["SPELL_BOOK_TYPE"] ~= "pet" then AutoCastShine_AutoCastStop(petAutoCastShine); return end
 
 	local autoCastAllowed, autoCastEnabled = GetSpellAutocast(bIndex, BobUI_Globals["SPELL_BOOK_TYPE"])
 
-
 	if ( autoCastAllowed ) then
 		autoCastableTexture:Show();
-	else
-		autoCastableTexture:Hide();
 	end
 	
 	if autoCastEnabled then
@@ -313,6 +318,8 @@ function updateSpellButtons()
 	for i = 1, #BobTabPage1.buttons do 
 		local button = BobTabPage1.buttons[i];
 		button:Hide(); 
+		button.FlyoutArrow:Hide()
+
 		if i <= BobUI_Globals["VIEWED_SPELL_BOOK_NUM_SPELLS"] then
 			local offset, isFirstOfProfession, isPassive, isOnActionbar, texture, spellType, numFlyoutSpells, actionID, spellName, subSpellName, spellID, spellLevel, autoCastAllowed, autoCastEnabled, professionIndex = BobUI_spellBookItemData(i)
 
@@ -322,8 +329,6 @@ function updateSpellButtons()
 				button.FlyoutArrow:Show()
 				SetClampedTextureRotation(button.FlyoutArrow, 180);
 				isOnActionbar = true
-			else
-				button.FlyoutArrow:Hide()
 			end
 
 			local missingOnActionBar = ((isOnActionbar ~= true) and (isPassive ~= true))
@@ -810,22 +815,24 @@ function CliqueShown()
 end
 
 function BobUI_toggleTabPage(shown)
-	shown:Show()
-	local hidden = nil
+	if not InCombatLockdown() then
+		shown:Show()
+		local hidden = nil
 
-	if shown == BobTabPage1 then hidden = BobTabPage2 else hidden = BobTabPage1 end
+		if shown == BobTabPage1 then hidden = BobTabPage2 else hidden = BobTabPage1 end
 
-	BobUI_PlayerTalentFrame:SetPoint("TOPLEFT", shown, "TOPRIGHT", 10, 0)
+		BobUI_PlayerTalentFrame:SetPoint("TOPLEFT", shown, "TOPRIGHT", 10, 0)
 
-	if shown == BobTabPage2 then
+		if shown == BobTabPage2 then
 
-		BobTabPage2.nameEditBox:SetPoint("TOPLEFT", BobTabPage2, "TOPLEFT", 4, -15)
-		BobTabPage2.nameEditBox:SetSize((BobTabPage2NameEditBox.bg:GetWidth() - 4) + BobTabPage2ControlButton2:GetWidth(), BobTabPage2NameEditBox:GetHeight())
-		
-		BobTabPage2:SetWidth(BobTabPage2.nameEditBox:GetWidth() + 18 + BobTabPage2ScrollFrame:GetWidth() + 22)
-		--BobTabPage2ControlButton2:SetPoint("TOPLEFT", BobTabPage2NameEditBox.bg, "TOPRIGHT", 2, 0)
+			BobTabPage2.nameEditBox:SetPoint("TOPLEFT", BobTabPage2, "TOPLEFT", 4, -15)
+			BobTabPage2.nameEditBox:SetSize((BobTabPage2NameEditBox.bg:GetWidth() - 4) + BobTabPage2ControlButton2:GetWidth(), BobTabPage2NameEditBox:GetHeight())
+			
+			BobTabPage2:SetWidth(BobTabPage2.nameEditBox:GetWidth() + 18 + BobTabPage2ScrollFrame:GetWidth() + 22)
+			--BobTabPage2ControlButton2:SetPoint("TOPLEFT", BobTabPage2NameEditBox.bg, "TOPRIGHT", 2, 0)
+		end
+		hidden:Hide()
 	end
-	hidden:Hide()
 end
 
 function resizeBackground() 
@@ -877,8 +884,8 @@ function BobUI_AbilityTab_OnShow(self)
 	resizeBackground() 
 
 	MicroButtonPulseStop(TalentMicroButton);
-	TalentMicroButtonAlert:Hide();
-	UpdateMicroButtons();
+	if TalentMicroButtonAlert ~= nil then TalentMicroButtonAlert:Hide(); end -- needs fixing for SL.
+	UpdateMicroButtons(); 
 
 	if BobUI_Settings["BackgroundColor"] == nil then BobUI_Settings["BackgroundColor"] = BobUI_Settings_Recommended["BackgroundColor"] end
 
