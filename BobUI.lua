@@ -103,50 +103,57 @@ function BobUI_AbilityTab_OnLoad()
 	SpellBookFrame:SetParent(HideFrames)
 
 	SpellBookFrame:SetScript("OnShow", function()
-		if CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false) then
-			if SpellBookFrame:GetParent() ~= HideFrames then SpellBookFrame:SetParent(HideFrames) end
-			SpellBookFrame:UnregisterAllEvents();
+		if not InCombatLockdown() then
+			if CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false) then
+				if SpellBookFrame:GetParent() ~= HideFrames then SpellBookFrame:SetParent(HideFrames) end
+				SpellBookFrame:UnregisterAllEvents();
+			end
 		end
 	end)
 	
 
 	hooksecurefunc("TalentFrame_LoadUI", function()
-		PlayerTalentFrame:SetParent(HideFrames)
-		PlayerTalentFrame:UnregisterAllEvents();
+		if not InCombatLockdown() then
+			PlayerTalentFrame:SetParent(HideFrames)
+			PlayerTalentFrame:UnregisterAllEvents();
+		end
 	end)
 
 	hooksecurefunc("ToggleSpellBook", function(bookType)
-		if bookType == "professions" then
-			if BobUI_Globals["SPELL_BOOK_TYPE"] == "spell" then
-				SpecButton7:Click()
-				if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
+		if not InCombatLockdown() then
+			if bookType == "professions" then
+				if BobUI_Globals["SPELL_BOOK_TYPE"] == "spell" then
+					SpecButton7:Click()
+					if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
+				end
+			else
+				if BobUI_Globals["SPELL_BOOK_TYPE"] == "profession" then
+					_G["SpecButton"..(GetSpecialization() + 1)]:Click()
+					if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
+				end
+				-- if shown professions, then go to specs spell book
 			end
-		else
-			if BobUI_Globals["SPELL_BOOK_TYPE"] == "profession" then
-				_G["SpecButton"..(GetSpecialization() + 1)]:Click()
-				if BobUI_AbilityTab:IsShown() == false then toggleSpellBook() end
-			end
-			-- if shown professions, then go to specs spell book
 		end
 	end)
 
 	hooksecurefunc("ShowUIPanel", function(frame)
-		local frameName = frame
-		if type(frame) == "table" then frameName = frame:GetName() end
+		if not InCombatLockdown() then
+			local frameName = frame
+			if type(frame) == "table" then frameName = frame:GetName() end
 
-		if frame ~= nil then
-			if ((frameName == "SpellBookFrame" and CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false)) or (frameName == "PlayerTalentFrame")) then
-				if frame:IsShown() then HideUIPanel(frame) end
-				toggleSpellBook()
-			else
-				if frameName == "SpellBookFrame" then
-					SpellBookFrame:SetParent(UIParent)
-					SpellBookFrame.bookType = BOOKTYPE_SPELL;
-					SpellBookFrame_Update();
+			if frame ~= nil then
+				if ((frameName == "SpellBookFrame" and CliqueShown() == false and (HasPendingGlyphCast() == false and IsPendingGlyphRemoval() == false)) or (frameName == "PlayerTalentFrame")) then
+					if frame:IsShown() then HideUIPanel(frame) end
+					toggleSpellBook()
+				else
+					if frameName == "SpellBookFrame" then
+						SpellBookFrame:SetParent(UIParent)
+						SpellBookFrame.bookType = BOOKTYPE_SPELL;
+						SpellBookFrame_Update();
+					end
 				end
 			end
 		end
-
 	end)
 
 	if BobUI_Globals["VIEWED_SPELL_BOOK"] == nil then
@@ -155,8 +162,9 @@ function BobUI_AbilityTab_OnLoad()
 	end
 	
 
-	BobUI_toggleTabPage(BobTabPage1)
-
+	if not InCombatLockdown() then
+		BobUI_toggleTabPage(BobTabPage1)
+	end
 	
 
 end
