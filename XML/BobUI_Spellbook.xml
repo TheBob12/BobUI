@@ -4,201 +4,6 @@
 	<Script file="XML/BobUI_Spellbook.lua"/>
 	<Script file="XML/BobUI_Talents.lua"/>
 
-
-	<Texture name="BobUI_Spellbook-TrainBook" file="Interface\Spellbook\Spellbook-Parts" virtual="true">
-		<Size x="24" y="24"/>
-		<TexCoords left="0.79296875" right="0.94531250" top="0.17968750" bottom="0.32421875"/>
-	</Texture>
-
-
-	<EditBox name="BobUI_EditBoxTemplate" autoFocus="false" virtual="true">
-		<Size x="120" y="20" />
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="bg">
-					<Color r="0.9" g="0.9" b="0.9" a="1"/>
-					<Size x="128" y="20" />
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<FontString font="Fonts\ARIALN.TTF">
-			<Size x="0" y="50"/>
-			<Color a="1" r="0" g="0" b="0" />
-			<FontHeight val="14"/>
-			<Anchors>
-				<Anchor point="CENTER"/>
-			</Anchors>
-		</FontString>
-		<Scripts>
-			<OnKeyUp function="editBox_OnKeyUp" />
-		</Scripts>
-	</EditBox>
-
-
-	<CheckButton name="BobUI_SpellButtonTemplate" inherits="SecureFrameTemplate" virtual="true">
-		<Size x="36" y="36"/>
-		<Layers>
-			<Layer>
-				<Texture name="$parentIconTexture" hidden="true">
-					<TexCoords left="0.15" right="0.85" top="0.1" bottom="0.9"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" />
-						<Anchor point="BOTTOMRIGHT" />
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer>
-				<FontString name="$parentRequiredLevelString" hidden="true" justifyH="LEFT" parentKey="RequiredLevelString">
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" relativeTo="$parentIconTexture" relativePoint="BOTTOMRIGHT" x="-1" y="1"/>
-					</Anchors>
-					<Color r="0.25" g="0.12" b="0"/>
-				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture name="$parentAutoCastable" file="Interface\Buttons\UI-AutoCastableOverlay" hidden="true">
-					<Size x="60" y="60"/>
-					<Anchors>
-						<Anchor point="CENTER" x="0" y="0"/>
-					</Anchors>
-				</Texture>
-				<Texture parentKey="GlyphIcon" hidden="true" alpha="1" alphaMode="BLEND" atlas="GlyphIcon-Spellbook" useAtlasSize="true">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="5" y="4"/>
-					</Anchors>
-				</Texture>
-				<Texture parentKey="GlyphActivate" hidden="true" alpha="1" alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight-Blue" useAtlasSize="true">
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-				<Texture parentKey="AbilityHighlight" hidden="true" alpha="1" alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight-Blue" useAtlasSize="true">
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer>
-				<Texture parentKey="GlyphTranslation" hidden="true" alpha="1" alphaMode="ADD" atlas="GlyphIcon-Spellbook" useAtlasSize="true">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="5" y="4"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentFlyoutArrow" file="Interface\Buttons\ActionBarFlyoutButton" parentKey="FlyoutArrow" hidden="true">
-					<Size x="22" y="11"/>
-					<Anchors>
-						<Anchor point="BOTTOM" x="0" y="-8"/>
-					</Anchors>
-					<TexCoords left="0.62500000" right="0.98437500" top="0.74218750" bottom="0.82812500"/>
-				</Texture>
-				<Texture parentKey="SpellHighlightTexture" atlas="bags-newitem" useAtlasSize="false" alphaMode="ADD" hidden="true">
-					<TexCoords left="0.15" right="0.85" top="0.1" bottom="0.9"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" />
-						<Anchor point="BOTTOMRIGHT" />
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer>
-				<FontString name="$parentProfessionText" maxLines="2" hidden="true" parentKey="profText" justifyH="LEFT" text="" font="Fonts\ARIALN.TTF">
-					<Color r="0.8" g="0.8" b="0.8" a="1"/>
-					<FontHeight val="14"/>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Cooldown name="$parentCooldown" parentKey="cooldown" inherits="CooldownFrameTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" />
-					<Anchor point="BOTTOMRIGHT" />
-				</Anchors>
-				<Layers>
-					<Layer>
-						<FontString name="$parentCooldownTimer" inherits="GameFontNormal" maxLines="1" hidden="true" justifyH="center" parentKey="coolDownTimer">
-							<Anchors>
-								<Anchor point="TOPLEFT" />
-								<Anchor point="BOTTOMRIGHT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-				</Layers>
-			</Cooldown>
-			<Frame name="$parentShine" inherits="AutoCastShineTemplate">
-				<Anchors>
-					<Anchor point="CENTER" x="0" y="0"/>
-				</Anchors>
-				<Size x="28" y="28"/>
-			</Frame>
-			<Button name="$parentUnlearnButton" parentKey="unlearn" hidden="true">
-				<Size x="16" y="16"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="-6" y="6"/>
-				</Anchors>
-				<Layers>
-					<Layer level="ARTWORK">
-						<Texture file="Interface\Buttons\UI-GroupLoot-Pass-Up" alpha="0.75" parentKey="texture"/>
-					</Layer>
-				</Layers>
-				<Scripts>
-					<OnEnter>
-						self.texture:SetAlpha(1.0);
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(UNLEARN_SPECIALIZATION_TOOLTIP);
-					</OnEnter>
-					<OnLeave>
-						self.texture:SetAlpha(0.75);
-						GameTooltip_Hide();
-					</OnLeave>
-					<OnMouseDown>
-						self.texture:SetPoint("TOPLEFT", 1, -1);
-					</OnMouseDown>
-					<OnMouseUp>
-						self.texture:SetPoint("TOPLEFT", 0, 0);
-					</OnMouseUp>
-				</Scripts>
-			</Button>
-			<Frame name="$textureTrainBook" hidden="true" parentKey="TrainBook" setAllPoints="true">
-				<Layers>
-					<Layer level="ARTWORK">
-						<Texture name="$parentTrainBook" inherits="BobUI_Spellbook-TrainBook" parentKey="Icon">
-							<Anchors>
-								<Anchor point="BOTTOMRIGHT" x="1" y="-1"/>
-							</Anchors>
-						</Texture>
-					</Layer>
-
-				</Layers>
-			</Frame>
-		</Frames>
-		<Animations>
-			<AnimationGroup parentKey="GlyphActivateAnim" setToFinalAlpha="true">
-				<Alpha childKey="GlyphActivate" duration="0.25" order="1" fromAlpha="0" toAlpha="1"/>
-				<Alpha childKey="GlyphActivate" startDelay="0.25" duration="0.75" order="1" fromAlpha="1" toAlpha="0"/>
-				<Scale childKey="GlyphActivate" smoothing="OUT" duration="0.25" order="1" fromScaleX="1" fromScaleY="1" toScaleX="1.35" toScaleY="1.35"/>
-				<Alpha childKey="GlyphIcon" smoothing="OUT" duration="0.25" order="1" fromAlpha="0" toAlpha="1"/>
-				<Scale childKey="GlyphIcon" smoothing="IN" duration="0.25" order="1" fromScaleX="1.75" fromScaleY="1.75" toScaleX="1" toScaleY="1"/>
-				<Alpha childKey="GlyphTranslation" smoothing="OUT" duration="0.25" order="1" fromAlpha="0" toAlpha="1"/>
-				<Translation childKey="GlyphTranslation" smoothing="OUT" duration="0.25" order="1" offsetX="-2" offsetY="-2"/>
-				<Alpha childKey="GlyphTranslation" startDelay="0.25" smoothing="OUT" duration="0.25" order="1" fromAlpha="1" toAlpha="0"/>
-				<Scripts>
-					<OnFinished>
-						self:GetParent().GlyphActivate:Hide();
-					</OnFinished>
-				</Scripts>
-			</AnimationGroup>
-			<AnimationGroup parentKey="AbilityHighlightAnim" setToFinalAlpha="true" looping="REPEAT">
-				<Alpha childKey="AbilityHighlight" duration="0.25" order="1" fromAlpha="0.5" toAlpha="1"/>
-				<Alpha childKey="AbilityHighlight" startDelay="0.5" duration="0.75" order="1" fromAlpha="1" toAlpha="0.5"/>
-			</AnimationGroup>
-		</Animations>
-		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
-		<HighlightTexture name="$parentHighlight" file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
-		<CheckedTexture file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD"/>
-	</CheckButton>
-
 	<ScrollFrame name="BobUI_HybridScrollFrameTemplate" virtual="true">
 		<ScrollChild>
 			<Frame name="$parentScrollChild" parentKey="ScrollChild">
@@ -430,80 +235,6 @@
 	</Button>
 
 
-	<Button name="BobUI_HeartEssenceButtonTemplate" virtual="true" hidden="true" mixin="BobUI_HeartEssenceButtonMixin" motionScriptsWhileDisabled="true">		<!---->
-		<Size x="40" y="40"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" parentKey="bg">
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-						<Anchor point="BOTTOMRIGHT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture parentKey="Texture">
-					<Size x="36" y="36"/>
-					<Anchors>
-						<Anchor point="CENTER" x="0" y="0" />
-					</Anchors>
-					<TexCoords left="0.15" right="0.85" top="0.1" bottom="0.9" />
-				</Texture>
-			</Layer>
-		</Layers>
-		<Scripts>
-			<OnEnter method="OnEnter"/>
-			<OnLeave function="GameTooltip_Hide"/>
-			<OnShow method="OnShow"/>
-			<OnClick method="OnClick"/>
-			<!--OnHide method="OnHide"/>
-			<OnEvent method="OnEvent"/>
-			<OnDragStart method="OnDragStart"/-->
-		</Scripts>
-	</Button>
-
-	<Button name="BobUI_HeartEssenceSlotTemplate" virtual="true" mixin="BobUI_HeartEssenceSlotMixin" motionScriptsWhileDisabled="true">
-		<Size x="40" y="40"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" parentKey="bg">
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-						<Anchor point="BOTTOMRIGHT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture parentKey="Texture">
-					<Size x="36" y="36"/>
-					<Anchors>
-						<Anchor point="CENTER" x="0" y="0" />
-					</Anchors>
-					<TexCoords left="0.15" right="0.85" top="0.1" bottom="0.9" />
-				</Texture>
-			</Layer>
-			<Layer level="BORDER">
-				<Texture parentKey="Arrow" file="Interface\MINIMAP\MiniMap-QuestArrow" hidden="true">
-					<Size x="20" y="20"/>
-					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.bg" relativePoint="RIGHT" x="0" y="0"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Scripts>
-			<OnEnter method="OnEnter"/>
-			<OnLeave function="GameTooltip_Hide"/>
-			<OnShow method="OnShow"/>
-			<!--OnHide method="OnHide"/>
-			<OnEvent method="OnEvent"/-->
-			<OnDragStart method="OnDragStart"/>
-			<OnLoad method="OnLoad"/>
-			<OnClick method="OnClick"/>
-		</Scripts>
-	</Button>
-
-
 	<Button name="BobUI_PvpTalentSlotTemplate" virtual="true" mixin="BobUI_PvpTalentSlotMixin" motionScriptsWhileDisabled="true">
 		<Size x="36" y="36"/>
 		<Layers>
@@ -562,383 +293,6 @@
 			<KeyValue key="isTrinket" value="true" type="boolean"/>
 		</KeyValues>
 	</Button>
-
-
-
-	<Button name="BobUI_SpecButtonTemplate" text="" virtual="true" inherits="SecureActionButtonTemplate" protected="true">
-		<Size x="40" y="40" />
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" parentKey="bg">
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-						<Anchor point="BOTTOMRIGHT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture name="$parentSpecIcon" parentKey="specIcon">
-					<Size x="36" y="36"/>
-					<Anchors>
-						<Anchor point="CENTER" x="0" y="0" />
-					</Anchors>
-					<TexCoords left="0.15" right="0.85" top="0.1" bottom="0.9" />
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK" textureSubLevel="3">
-				<Texture name="$parentRoleIcon" file="Interface\LFGFrame\UI-LFG-ICON-ROLES" parentKey="roleIcon">
-					<Size x="20" y="20"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentSpecIcon" relativePoint="BOTTOMRIGHT" x="-14" y="14" />
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Scripts>
-			<OnShow function="SpecButton_OnShow"/>
-			<OnEnter function="SpecButton_OnEnter"/>
-			<OnLeave function="SpecButton_OnLeave"/>
-			<OnClick function="SpecButton_OnClick"/>
-			<OnDoubleClick function="SpecButton_OnDoubleClick"/>
-		</Scripts>
-	</Button>
-
-
-	<Button name="BobUI_PresetButtonTemplate" virtual="true" inherits="SecureActionButtonTemplate" protected="true">
-		<Size x="60" y="20"/>
-		<ButtonText font="Fonts\ARIALN.TTF">
-			<Size x="0" y="50"/>
-			<Color r="0.8" g="0.8" b="0.8" a="1"/>
-			<FontHeight val="12"/>
-			<Anchors>
-				<Anchor point="CENTER"/>
-			</Anchors>
-		</ButtonText>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" parentKey="bg">
-					<Color a="1" r="0.2" g="0.2" b="0.2" />
-					<Size x="60" y="20"/>
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-	</Button>
-
-	<Button name="BobUI_TalentPresetButtonTemplate" virtual="true" inherits="SecureActionButtonTemplate" protected="true">
-		<Size x="166" y="20"/>
-		<ButtonText font="Fonts\ARIALN.TTF">
-			<Size x="0" y="50"/>
-			<Color r="0.8" g="0.8" b="0.8" a="1"/>
-			<FontHeight val="12"/>
-			<Anchors>
-				<Anchor point="CENTER"/>
-			</Anchors>
-		</ButtonText>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" parentKey="bg">
-					<Color a="0.6" r="0.2" g="0.2" b="0.2" />
-					<Size x="166" y="20"/>
-					<Anchors>
-						<Anchor point="CENTER"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture name="$parentSpecIcon" parentKey="specIcon">
-					<Size x="16" y="16"/>
-					<Anchors>
-						<Anchor point="RIGHT" x="2" y="0" />
-					</Anchors>
-					<TexCoords left="0.15" right="0.85" top="0.1" bottom="0.9" />
-				</Texture>
-			</Layer>
-		</Layers>
-		<Scripts>
-			<OnClick function="TalentPresets_OnClick"/>
-			<OnDoubleClick function="TalentPresets_OnDoubleClick"/>
-		</Scripts>
-	</Button>
-
-
-	<Frame name="BobUI_SettingsFrame" hidden="true" movable="true" frameStrata="DIALOG" parent="UIParent" enableMouse="true">
-		<Size x="360" y="420" />
-		<Anchors>
-			<Anchor point="CENTER" x="0.5" y="0" />
-		</Anchors>
-		<Frames>
-			<Frame name="$parentBackground">
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-					<Anchor point="BOTTOMRIGHT"/>
-				</Anchors>
-				<Layers>
-					<Layer>
-						<Texture parentKey="bg">
-							<Color r="0" g="0" b="0" a="0.9"/>
-							<Anchors>
-								<Anchor point="TOPLEFT"/>
-								<Anchor point="BOTTOMRIGHT"/>
-							</Anchors>
-						</Texture>
-					</Layer>
-				</Layers>
-			</Frame>
-			<Frame name="BobUI_SettingsFrameTitle" enableMouse="true">
-				<Scripts>
-					<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
-					<OnDragStart>BobUI_SettingsFrame:StartMoving();</OnDragStart>
-					<OnDragStop>BobUI_SettingsFrame:StopMovingOrSizing();</OnDragStop>
-				</Scripts>
-				<Size x="360" y="50"/>
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-				</Anchors>
-				<Layers>
-					<Layer>
-						<FontString text="Settings" font="Fonts\ARIALN.TTF" parentKey="settingsTitle">
-							<Size x="0" y="50"/>
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="18"/>
-							<Anchors>
-								<Anchor point="CENTER"/>
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<Texture>
-							<Color a="1" r="0.1" g="0.1" b="0.1" />
-							<Size x="340" y="1"/>
-							<Anchors>
-								<Anchor point="BOTTOM"></Anchor>
-							</Anchors>
-						</Texture>
-					</Layer>
-					<Layer>
-						<FontString name="$parentBorderSize" parentKey="borderSize" text="Border Size" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-60" x="10" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<FontString name="$parentSeparatorSize" parentKey="separatorSize" text="Separator Size" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentBorderSize" relativePoint="BOTTOMLEFT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<FontString name="$parentScaling" parentKey="scaling" text="Scaling (Bob UI)" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentSeparatorSize" relativePoint="BOTTOMLEFT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<FontString name="$parentTabIconSize" parentKey="tabIconSize" text="Tab Icon Size" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentScaling" relativePoint="BOTTOMLEFT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<FontString name="$parentSpellIconSize" parentKey="spellIconSize" text="Spell Icon Size" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentTabIconSize" relativePoint="BOTTOMLEFT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<FontString name="$parentFontSizeHeader" parentKey="fontSizeHeader" text="Text size: Header" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-46" x="0" relativeTo="$parentSpellIconSize" relativePoint="BOTTOMLEFT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer>
-						<FontString name="$parentFontSizeBody" parentKey="fontSizeBody" text="Text size: Labels" font="Fonts\ARIALN.TTF">
-							<Color r="0.8" g="0.8" b="0.8" a="1"/>
-							<FontHeight val="14"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentFontSizeHeader" relativePoint="BOTTOMLEFT" />
-							</Anchors>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Frames>
-					<Button name="BobUI_SettingsFrameCloseButton" parentKey="CloseButton">
-						<Size x="16" y="16"/>
-						<Anchors>
-							<Anchor point="RIGHT" x="-16" y="0.5" relativePoint="RIGHT" />
-						</Anchors>
-						<Layers>
-							<Layer>
-								<Texture file="Interface\Addons\BobUI\Art\Close" parentKey="btnIcon">
-									<Size x="16" y="16"/>
-									<Anchors>
-										<Anchor point="CENTER" />
-									</Anchors>
-									<Color a="1" r="0.8" g="0.1" b="0.1" />
-								</Texture>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnClick>BobUI_SettingsFrame:Hide()</OnClick>
-							<OnEnter>self.btnIcon:SetVertexColor(0.6, 0.1, 0.1, 0.9)</OnEnter>
-							<OnLeave>self.btnIcon:SetVertexColor(0.8, 0.1, 0.1, 0.9)</OnLeave>
-							<OnShow>self.btnIcon:SetVertexColor(0.8, 0.1, 0.1, 0.9)</OnShow>
-						</Scripts>
-					</Button>
-					<EditBox name="$parentBorderSizeEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentBorderSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "BorderSize"; self:SetText(BobUI_Settings["BorderSize"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-
-					<EditBox name="$parentSeparatorEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentSeparatorSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "SeparatorSize"; self:SetText(BobUI_Settings["SeparatorSize"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-					<EditBox name="$parentScalingEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentScaling" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "Scaling"; self:SetText(BobUI_Settings["Scaling"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-					<EditBox name="$parentTabIconSizeEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentTabIconSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "TabIconSize"; self:SetText(BobUI_Settings["TabIconSize"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-					<EditBox name="$parentSpellIconSizeEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentSpellIconSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "SpellIconSize"; self:SetText(BobUI_Settings["SpellIconSize"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-					<EditBox name="$parentFontSizeHeaderEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentFontSizeHeader" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "FontSizeHeader"; self:SetText(BobUI_Settings["FontSizeHeader"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-					<EditBox name="$parentFontSizeBodyEditBox" inherits="BobUI_EditBoxTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentFontSizeBody" relativePoint="BOTTOMLEFT" x="4" y="-1" />
-						</Anchors>
-						<Scripts>
-							<OnShow>self.settingName = "FontSizeBody"; self:SetText(BobUI_Settings["FontSizeBody"]);</OnShow>
-							<OnKeyDown function="editBoxKeyDown" />
-						</Scripts>
-					</EditBox>
-					<Button name="$parentBackgroundColorButton" inherits="BobUI_PresetButtonTemplate" text="Background">
-						<Anchors>
-							<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-10" y="-60" />
-						</Anchors>
-						<Scripts>
-							<OnLoad> 
-								local affectedFrames = {}
-
-								table.insert(affectedFrames, "BobUI_AbilityTab")
-
-								self.affectedFrames = affectedFrames
-								self.Background = true
-								self.Separator = false
-
-								setupColorButton(self) 
-							</OnLoad>
-						</Scripts>
-					</Button>
-					<Button name="$parentTextColorButton" inherits="BobUI_PresetButtonTemplate" text="Text Color">
-						<Anchors>
-							<Anchor point="TOPRIGHT" relativeTo="$parentBackgroundColorButton" relativePoint="BOTTOMRIGHT" x="0" y="-5" />
-						</Anchors>
-						<Scripts>
-							<OnLoad> 
-								local affectedFrames = {}
-
-								table.insert(affectedFrames, "BobTabPage1Actives")
-								table.insert(affectedFrames, "BobTabPage1Passives")
-								table.insert(affectedFrames, "BobTabPage2SetName")
-								table.insert(affectedFrames, "BobTabPage2TalentSetInfo")
-								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsTalents")
-								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalents")
-								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsEssencesTitle")
-								table.insert(affectedFrames, "BobUI_TabTitle")
-
-								self.affectedFrames = affectedFrames
-								self.Background = false
-								self.Separator = false
-
-								setupColorButton(self) 
-							</OnLoad>
-						</Scripts>
-					</Button>
-					<Button name="$parentSeparatorColorButton" inherits="BobUI_PresetButtonTemplate" text="Separators">
-						<Anchors>
-							<Anchor point="TOPRIGHT" relativeTo="$parentTextColorButton" relativePoint="BOTTOMRIGHT" x="0" y="-5" />
-						</Anchors>
-						<Scripts>
-							<OnLoad> 
-								local affectedFrames = {}
-
-								table.insert(affectedFrames, "BobUI_specButtons")
-								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalents")
-								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame")
-
-								self.affectedFrames = affectedFrames
-								self.Background = true
-								self.Separator = true
-
-								setupColorButton(self) 
-							</OnLoad>
-						</Scripts>
-					</Button>
-				</Frames>
-			</Frame>
-		</Frames>
-		<Scripts>
-			<OnShow>self:Raise()</OnShow>
-		</Scripts>
-	</Frame>
 
 	<Frame name="BobUI_AbilityTab" hidden="true" movable="true" frameStrata="HIGH" enableMouse="true">
 		<Size x="733" y="470"/>
@@ -1440,75 +794,74 @@
 							<OnHide method="OnHide"/>
 						</Scripts>
 					</Frame>
-					<Frame name="$parentEssences" parentKey="heartEssenceFrame">
-						<Size x="40" y="340"/>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentBobUI_PvpTalentFrame" relativePoint="TOPRIGHT" x="0" y="0"/>
-						</Anchors>
-						<Frames>
-							<Frame name="$parentTitle" parentKey="titleFrame" hidden="false">
-								<Size x="1" y="1"/>
-								<Anchors>
-									<Anchor point="TOPLEFT" x="0" y="-16" />
-								</Anchors>
-								<Layers>
-									<Layer>
-										<FontString name="$parentText" parentKey="category" text="" font="Fonts\ARIALN.TTF">
-											<Color r="0.8" g="0.8" b="0.8" a="1"/>
-											<FontHeight val="14"/>
-											<Anchors>
-												<Anchor point="TOPLEFT" x="0" y="16" />
-											</Anchors>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Scripts>
-									<OnShow>self.category:SetText(C_Item.GetItemNameByID(158075))</OnShow>
-								</Scripts>
-							</Frame>
-							<Button parentKey="HeartSlot1" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
-								<Anchors>
-									<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="TOPLEFT" x="0" y="0"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="HeartSlot2" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
-								<Anchors>
-									<Anchor point="TOP" relativeKey="$parent.HeartSlot1" relativePoint="BOTTOM" x="0" y="-10"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="HeartSlot3" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
-								<Anchors>
-									<Anchor point="TOP" relativeKey="$parent.HeartSlot2" relativePoint="BOTTOM" x="0" y="-10"/>
-								</Anchors>
-							</Button>
-							<Button parentKey="HeartSlot4" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
-								<Anchors>
-									<Anchor point="TOP" relativeKey="$parent.HeartSlot3" relativePoint="BOTTOM" x="0" y="-10"/>
-								</Anchors>
-							</Button>
-							<Frame name="$parentEssenceList" parentKey="essenceList" hidden="true">
-								<Anchors>
-									<Anchor point="TOPLEFT" relativeKey="$parent.HeartSlot1" relativePoint="TOPRIGHT" x="20" y="0"/>
-									<Anchor point="BOTTOMRIGHT" />
-								</Anchors>
-								<Frames>
-
-								</Frames>
-								<Scripts>
-									<OnShow function="GetEssenceList" />
-								</Scripts>
-							</Frame>
-						</Frames>
-						<Scripts>
-							<OnShow function="setupHeartEssences" />
-						</Scripts>
-					</Frame>
 
 
 				</Frames>
 			</Frame>
 
+			<Frame name="BobUI_HeartEssences" parentKey="heartEssenceFrame">
+				<Size x="40" y="340"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame" relativePoint="TOPRIGHT" x="0" y="0"/>
+				</Anchors>
+				<Frames>
+					<Frame name="$parentTitle" parentKey="titleFrame" hidden="false">
+						<Size x="1" y="1"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="-16" />
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" parentKey="category" text="" font="Fonts\ARIALN.TTF">
+									<Color r="0.8" g="0.8" b="0.8" a="1"/>
+									<FontHeight val="14"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="16" />
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnShow>self.category:SetText(C_Item.GetItemNameByID(158075))</OnShow>
+						</Scripts>
+					</Frame>
+					<Button parentKey="HeartSlot1" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="HeartSlot2" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.HeartSlot1" relativePoint="BOTTOM" x="0" y="-10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="HeartSlot3" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.HeartSlot2" relativePoint="BOTTOM" x="0" y="-10"/>
+						</Anchors>
+					</Button>
+					<Button parentKey="HeartSlot4" parentArray="Slots" inherits="BobUI_HeartEssenceSlotTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.HeartSlot3" relativePoint="BOTTOM" x="0" y="-10"/>
+						</Anchors>
+					</Button>
+					<Frame name="$parentEssenceList" parentKey="essenceList" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.HeartSlot1" relativePoint="TOPRIGHT" x="20" y="0"/>
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<Frames>
 
+						</Frames>
+						<Scripts>
+							<OnShow function="GetEssenceList" />
+						</Scripts>
+					</Frame>
+				</Frames>
+				<Scripts>
+					<OnShow function="setupHeartEssences" />
+				</Scripts>
+			</Frame>
 
 			<Frame name="BobUI_PlayerTalentFrameLockInfo" parent="BobUI_PlayerTalentFrame" hidden="true" enableMouse="true">
 				<Anchors>

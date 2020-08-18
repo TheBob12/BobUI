@@ -1,0 +1,282 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+
+	<Frame name="BobUI_SettingsFrame" hidden="true" movable="true" frameStrata="DIALOG" parent="UIParent" enableMouse="true">
+		<Size x="360" y="420" />
+		<Anchors>
+			<Anchor point="CENTER" x="0.5" y="0" />
+		</Anchors>
+		<Frames>
+			<Frame name="$parentBackground">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<Texture parentKey="bg">
+							<Color r="0" g="0" b="0" a="0.9"/>
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+								<Anchor point="BOTTOMRIGHT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame name="BobUI_SettingsFrameTitle" enableMouse="true">
+				<Scripts>
+					<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+					<OnDragStart>BobUI_SettingsFrame:StartMoving();</OnDragStart>
+					<OnDragStop>BobUI_SettingsFrame:StopMovingOrSizing();</OnDragStop>
+				</Scripts>
+				<Size x="360" y="50"/>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString text="Settings" font="Fonts\ARIALN.TTF" parentKey="settingsTitle">
+							<Size x="0" y="50"/>
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="18"/>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<Texture>
+							<Color a="1" r="0.1" g="0.1" b="0.1" />
+							<Size x="340" y="1"/>
+							<Anchors>
+								<Anchor point="BOTTOM"></Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer>
+						<FontString name="$parentBorderSize" parentKey="borderSize" text="Border Size" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-60" x="10" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parentSeparatorSize" parentKey="separatorSize" text="Separator Size" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentBorderSize" relativePoint="BOTTOMLEFT" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parentScaling" parentKey="scaling" text="Scaling (Bob UI)" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentSeparatorSize" relativePoint="BOTTOMLEFT" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parentTabIconSize" parentKey="tabIconSize" text="Tab Icon Size" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentScaling" relativePoint="BOTTOMLEFT" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parentSpellIconSize" parentKey="spellIconSize" text="Spell Icon Size" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentTabIconSize" relativePoint="BOTTOMLEFT" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parentFontSizeHeader" parentKey="fontSizeHeader" text="Text size: Header" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-46" x="0" relativeTo="$parentSpellIconSize" relativePoint="BOTTOMLEFT" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parentFontSizeBody" parentKey="fontSizeBody" text="Text size: Labels" font="Fonts\ARIALN.TTF">
+							<Color r="0.8" g="0.8" b="0.8" a="1"/>
+							<FontHeight val="14"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" y="-36" x="0" relativeTo="$parentFontSizeHeader" relativePoint="BOTTOMLEFT" />
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="BobUI_SettingsFrameCloseButton" parentKey="CloseButton">
+						<Size x="16" y="16"/>
+						<Anchors>
+							<Anchor point="RIGHT" x="-16" y="0.5" relativePoint="RIGHT" />
+						</Anchors>
+						<Layers>
+							<Layer>
+								<Texture file="Interface\Addons\BobUI\Art\Close" parentKey="btnIcon">
+									<Size x="16" y="16"/>
+									<Anchors>
+										<Anchor point="CENTER" />
+									</Anchors>
+									<Color a="1" r="0.8" g="0.1" b="0.1" />
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnClick>BobUI_SettingsFrame:Hide()</OnClick>
+							<OnEnter>self.btnIcon:SetVertexColor(0.6, 0.1, 0.1, 0.9)</OnEnter>
+							<OnLeave>self.btnIcon:SetVertexColor(0.8, 0.1, 0.1, 0.9)</OnLeave>
+							<OnShow>self.btnIcon:SetVertexColor(0.8, 0.1, 0.1, 0.9)</OnShow>
+						</Scripts>
+					</Button>
+					<EditBox name="$parentBorderSizeEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentBorderSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "BorderSize"; self:SetText(BobUI_Settings["BorderSize"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+
+					<EditBox name="$parentSeparatorEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentSeparatorSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "SeparatorSize"; self:SetText(BobUI_Settings["SeparatorSize"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+					<EditBox name="$parentScalingEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentScaling" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "Scaling"; self:SetText(BobUI_Settings["Scaling"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+					<EditBox name="$parentTabIconSizeEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentTabIconSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "TabIconSize"; self:SetText(BobUI_Settings["TabIconSize"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+					<EditBox name="$parentSpellIconSizeEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentSpellIconSize" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "SpellIconSize"; self:SetText(BobUI_Settings["SpellIconSize"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+					<EditBox name="$parentFontSizeHeaderEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentFontSizeHeader" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "FontSizeHeader"; self:SetText(BobUI_Settings["FontSizeHeader"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+					<EditBox name="$parentFontSizeBodyEditBox" inherits="BobUI_EditBoxTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentFontSizeBody" relativePoint="BOTTOMLEFT" x="4" y="-1" />
+						</Anchors>
+						<Scripts>
+							<OnShow>self.settingName = "FontSizeBody"; self:SetText(BobUI_Settings["FontSizeBody"]);</OnShow>
+							<OnKeyDown function="editBoxKeyDown" />
+						</Scripts>
+					</EditBox>
+					<Button name="$parentBackgroundColorButton" inherits="BobUI_PresetButtonTemplate" text="Background">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-10" y="-60" />
+						</Anchors>
+						<Scripts>
+							<OnLoad> 
+								local affectedFrames = {}
+
+								table.insert(affectedFrames, "BobUI_AbilityTab")
+
+								self.affectedFrames = affectedFrames
+								self.Background = true
+								self.Separator = false
+
+								setupColorButton(self) 
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="$parentTextColorButton" inherits="BobUI_PresetButtonTemplate" text="Text Color">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parentBackgroundColorButton" relativePoint="BOTTOMRIGHT" x="0" y="-5" />
+						</Anchors>
+						<Scripts>
+							<OnLoad> 
+								local affectedFrames = {}
+
+								table.insert(affectedFrames, "BobTabPage1Actives")
+								table.insert(affectedFrames, "BobTabPage1Passives")
+								table.insert(affectedFrames, "BobTabPage2SetName")
+								table.insert(affectedFrames, "BobTabPage2TalentSetInfo")
+								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsTalents")
+								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalents")
+								table.insert(affectedFrames, "BobUI_HeartEssencesTitle")
+								table.insert(affectedFrames, "BobUI_TabTitle")
+
+								self.affectedFrames = affectedFrames
+								self.Background = false
+								self.Separator = false
+
+								setupColorButton(self) 
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="$parentSeparatorColorButton" inherits="BobUI_PresetButtonTemplate" text="Separators">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parentTextColorButton" relativePoint="BOTTOMRIGHT" x="0" y="-5" />
+						</Anchors>
+						<Scripts>
+							<OnLoad> 
+								local affectedFrames = {}
+
+								table.insert(affectedFrames, "BobUI_specButtons")
+								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalents")
+								table.insert(affectedFrames, "BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame")
+
+								self.affectedFrames = affectedFrames
+								self.Background = true
+								self.Separator = true
+
+								setupColorButton(self) 
+							</OnLoad>
+						</Scripts>
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnShow>self:Raise()</OnShow>
+		</Scripts>
+	</Frame>
+    
+</Ui>

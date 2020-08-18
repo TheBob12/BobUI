@@ -23,7 +23,7 @@ function showHeartEssences()
 end
 
 function displayHeartEssenceSlots()
-    local EssenceFrame = BobUI_PlayerTalentFrameTalentsEssences
+    local EssenceFrame = BobUI_HeartEssences
 
     --local spellButtonSizeWithBorders = BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) -- should be a global. 
     --local EssenceFrameWidth = max(spellButtonSizeWithBorders + 30, EssenceFrame.titleFrame.category:GetWidth() + 10)
@@ -145,7 +145,7 @@ end
 
 function setupHeartEssences(self)
 	if showHeartEssences() then
-		if self == nil then self = BobUI_PlayerTalentFrameTalentsEssences end
+		if self == nil then self = BobUI_HeartEssences end
 		
 		local j = 1;
 		local slot = {};

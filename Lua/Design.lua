@@ -10,7 +10,7 @@ BobUI_FRAMES = { -- reference, for quickly changing settings.
 		"BobTabPage1PassivesTitle",
 		"BobUI_PlayerTalentFrameTalentsTalentsTitle",
 		"BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalentsTitle",
-		"BobUI_PlayerTalentFrameTalentsEssencesTitleText",
+		"BobUI_HeartEssencesTitleText",
 		"BobTabPage2SetName"
 	},
 	["BODY"] = {

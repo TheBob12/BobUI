@@ -68,7 +68,7 @@ function BobUI_events(self, event, ...)
 		BobUI_PvpTalentFrame_OnLoad()
 		
 		if showHeartEssences() then
-        	setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
+        	setupHeartEssences(BobUI_HeartEssences)
 		end
 
         if BobUI_Globals["LOADED"] == false then
@@ -99,7 +99,7 @@ function BobUI_events(self, event, ...)
         end
     elseif event == "AZERITE_ESSENCE_ACTIVATED" then
 		if isHeartEssenceOwned() then
-			setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
+			setupHeartEssences(BobUI_HeartEssences)
 		end
 	elseif (event == "PET_SPECIALIZATION_CHANGED" or event == "PLAYER_TALENT_UPDATE") and BobUI_AbilityTab:IsShown() then
 		BobUI_PlayerTalentFrame_Refresh()

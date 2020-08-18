@@ -210,8 +210,8 @@ function updateSpellButtons()
 	BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalents:SetPoint("TOPLEFT", BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalents:GetParent(), "TOPLEFT", 10, (-1 * BobUI_Settings["FontSizeBody"]))
 	BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalents.category:SetPoint("TOPLEFT", BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFramePVPTalents, "TOPLEFT", 0, BobUI_Settings["FontSizeBody"])
 
-	BobUI_PlayerTalentFrameTalentsEssencesTitle:SetPoint("TOPLEFT", BobUI_PlayerTalentFrameTalentsEssences, "TOPLEFT", 10, (-1 * BobUI_Settings["FontSizeBody"]))
-	BobUI_PlayerTalentFrameTalentsEssencesTitle.category:SetPoint("TOPLEFT", BobUI_PlayerTalentFrameTalentsEssencesTitle, "TOPLEFT", 0, BobUI_Settings["FontSizeBody"])
+	BobUI_HeartEssencesTitle:SetPoint("TOPLEFT", BobUI_HeartEssences, "TOPLEFT", 10, (-1 * BobUI_Settings["FontSizeBody"]))
+	BobUI_HeartEssencesTitle.category:SetPoint("TOPLEFT", BobUI_HeartEssencesTitle, "TOPLEFT", 0, BobUI_Settings["FontSizeBody"])
 
 
 
@@ -743,15 +743,25 @@ function resizeBackground()
 		BobUI_AbilityTab.bg:SetPoint("BOTTOM", BobUI_PlayerTalentFrame, "BOTTOM", 0, -10)
 	end
 
-	BobUI_AbilityTab.bg:SetPoint("RIGHT", (showHeartEssences() and BobUI_PlayerTalentFrameTalentsEssences or BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame), "RIGHT", 20, 0)
+	if showHeartEssences()  then 
+		if BobUI_HeartEssences.essenceList:IsShown() then
+			BobUI_HeartEssences:SetWidth(((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) + (((BobUI_Settings["BorderSize"] * 2) + BobUI_Settings["SpellIconSize"]) * 3 + 4)) + 10 + 20))
+		else
+			BobUI_HeartEssences:SetWidth(BobUI_HeartEssences.titleFrame.category:GetWidth() + 10)
+		end
+	end
+
+	BobUI_AbilityTab.bg:SetPoint("RIGHT", (showHeartEssences() and BobUI_HeartEssences or BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame), "RIGHT", 20, 0)
+
+	
 	if showHeartEssences()  then 
 		BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame.borderRight:Show()
-		BobUI_PlayerTalentFrameTalentsEssences:Show()
+		BobUI_HeartEssences:Show()
 	else
 		BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame.borderRight:Hide()
 	end
 
-	local frameWidth = (BobTabPage1:IsShown() and BobTabPage1:GetWidth() or BobTabPage2:GetWidth()) + 10 + BobUI_PlayerTalentFrame:GetWidth() + 10 + BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame:GetWidth() + (showHeartEssences() and BobUI_PlayerTalentFrameTalentsEssences:GetWidth() or 0) + 30
+	local frameWidth = (BobTabPage1:IsShown() and BobTabPage1:GetWidth() or BobTabPage2:GetWidth()) + 10 + BobUI_PlayerTalentFrame:GetWidth() + 10 + BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame:GetWidth() + (showHeartEssences() and BobUI_HeartEssences:GetWidth() or 0) + 30
 	
 	
 	BobUI_TabTitle.text:SetFont("Fonts/ARIALN.TTF", BobUI_Settings["FontSizeHeader"])
@@ -773,7 +783,8 @@ end
 
 function BobUI_AbilityTab_OnShow(self)
 	if BobUI_Globals["LOADED"] == false then return end
-	
+	if InCombatLockdown() then return end
+
 	updateSpellBookLabel()
 	BobUI_AbilityTab:SetScale(BobUI_Settings["Scaling"])
 

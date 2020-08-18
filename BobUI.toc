@@ -15,6 +15,8 @@ Lua/TalentsAndPvpTalents.lua
 Lua/Presets.lua
 Lua/Spells.lua
 
+XML/BobUI_Templates.xml
+XML/BobUI_Settings.xml
 XML/BobUI_Main.xml
 XML/BobUI_Spellbook.xml
 

@@ -33,10 +33,10 @@ function BobUI_TalentFrame_Update(TalentFrame, talentUnit)
 		TalentFrame.BobUI_PvpTalentFrame:SetSize(TalentFrame.BobUI_PvpTalentFrame.titleFrame.category:GetWidth() + 20 + BobUI_Settings["SeparatorSize"], TalentFrameHeight)
 	end
 
-	if TalentFrame.heartEssenceFrame.essenceList:IsShown() then
-		TalentFrame.heartEssenceFrame:SetSize(((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) + (((BobUI_Settings["BorderSize"] * 2) + BobUI_Settings["SpellIconSize"]) * 3 + 4)) + 10 + 20), TalentFrameHeight)
+	if BobUI_HeartEssences.essenceList:IsShown() then
+		BobUI_HeartEssences:SetSize(((BobUI_Settings["SpellIconSize"] + (BobUI_Settings["BorderSize"] * 2) + (((BobUI_Settings["BorderSize"] * 2) + BobUI_Settings["SpellIconSize"]) * 3 + 4)) + 10 + 20), TalentFrameHeight)
 	else
-		TalentFrame.heartEssenceFrame:SetSize(TalentFrame.heartEssenceFrame.titleFrame.category:GetWidth() + 10, TalentFrameHeight)
+		BobUI_HeartEssences:SetSize(BobUI_HeartEssences.titleFrame.category:GetWidth() + 10, TalentFrameHeight)
 	end
 	
 	
@@ -45,10 +45,10 @@ function BobUI_TalentFrame_Update(TalentFrame, talentUnit)
 	TalentFrame.BobUI_PvpTalentFrame.TalentSlot2:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
 	TalentFrame.BobUI_PvpTalentFrame.TalentSlot3:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
 
-	TalentFrame.heartEssenceFrame.HeartSlot1:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
-	TalentFrame.heartEssenceFrame.HeartSlot2:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
-	TalentFrame.heartEssenceFrame.HeartSlot3:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
-	TalentFrame.heartEssenceFrame.HeartSlot4:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
+	BobUI_HeartEssences.HeartSlot1:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
+	BobUI_HeartEssences.HeartSlot2:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
+	BobUI_HeartEssences.HeartSlot3:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
+	BobUI_HeartEssences.HeartSlot4:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
 
 
 	TalentFrame.BobUI_PvpTalentFrame.InvisibleWarmodeButton:SetSize(TalentFrame.BobUI_PvpTalentFrame.TrinketSlot:GetSize())
@@ -662,7 +662,7 @@ local BobUI_PvpTalentFrameEvents = {
 	"UI_MODEL_SCENE_INFO_UPDATED",
 };
 
-TALENT_WAR_MODE_BUTTON = nil;
+local WAR_MODE_BUTTON = nil;
 local round = function (num) return math.floor(num + .5); end
 
 function BobUI_CreateHybridScrollFrameButtons(self, buttonTemplate, initialOffsetX, initialOffsetY, initialPoint, initialRelative, offsetX, offsetY, point, relativePoint)
@@ -708,7 +708,7 @@ function BobUI_CreateHybridScrollFrameButtons(self, buttonTemplate, initialOffse
 end
 
 function BobUI_PvpTalentFrame_OnLoad()
-	TALENT_WAR_MODE_BUTTON = BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame.InvisibleWarmodeButton;
+	WAR_MODE_BUTTON = BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame.InvisibleWarmodeButton;
 
 	BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame:RegisterEvent("PLAYER_LEVEL_CHANGED");
 	for i, slot in ipairs(BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame.Slots) do
