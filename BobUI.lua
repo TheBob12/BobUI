@@ -28,6 +28,15 @@ BobUI:RegisterEvent("PLAYER_REGEN_ENABLED")
 BobUI:RegisterEvent("SKILL_LINES_CHANGED");
 BobUI:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 
+function toggleSpellBook()
+    if InCombatLockdown() then
+		return
+	else
+		if BobUI_AbilityTab:IsShown() then BobUI_AbilityTab:Hide() else BobUI_AbilityTab:Show() end
+	end
+end
+
+
 function BobUI_events(self, event, ...)
 
     if event == "PLAYER_REGEN_DISABLED" then
@@ -92,6 +101,27 @@ function BobUI_events(self, event, ...)
 		if isHeartEssenceOwned() then
 			setupHeartEssences(BobUI_PLayerTalentFrameTalentsEssences)
 		end
+	elseif (event == "PET_SPECIALIZATION_CHANGED" or event == "PLAYER_TALENT_UPDATE") and BobUI_AbilityTab:IsShown() then
+		BobUI_PlayerTalentFrame_Refresh()
+	elseif event == "UNIT_LEVEL" then
+		local arg1 = ...;
+
+		if (arg1 == "player") then
+			BobUI_PlayerTalentFrame_Update();
+		end
+	elseif event == "PLAYER_LEARN_TALENT_FAILED" then
+		local talentFrame = BobUI_PlayerTalentFrameTalents;
+
+		local talentIds = GetFailedTalentIDs();
+		for i = 1, #talentIds do
+			local row, column = select(8, GetTalentInfoByID(talentIds[i], BobUI_PlayerTalentFrame.talentGroup));
+			if (talentFrame.talentInfo[row] == column) then
+				talentFrame.talentInfo[row] = nil;
+			end
+		end
+		
+		BobUI_TalentFrame_Update(talentFrame, "player");
+		ClearFailedTalentIDs();
     end
 end
 

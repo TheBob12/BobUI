@@ -983,7 +983,7 @@
 							</Layer>
 						</Layers>
 						<Scripts>
-							<OnClick function="toggleSpellBook" />
+							<OnClick>BobUI_AbilityTab:Hide()</OnClick>
 							<OnEnter>self.btnIcon:SetVertexColor(0.6, 0.1, 0.1, 0.9)</OnEnter>
 							<OnLeave>self.btnIcon:SetVertexColor(0.8, 0.1, 0.1, 0.9)</OnLeave>
 							<OnShow>self.btnIcon:SetVertexColor(0.8, 0.1, 0.1, 0.9)</OnShow>

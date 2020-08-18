@@ -1,31 +1,6 @@
 -- BobUI_Spellbook.lua will eventually be removed and split up into relevant files.
 
 
-function GetNumSpellsForSpellBook(SPELL_BOOK)
-	
-	local name, texture, offset, numSlots, isGuild, offSpecID, shouldHide, specID = GetSpellTabInfo(SPELL_BOOK);
-
-	if SPELL_BOOK == 6 then
-		numSlots = select(1, HasPetSpells())
-	end
-
-	if SPELL_BOOK == 7 then -- professions
-		
-		numSlots = 0
-
-		for i=1,5 do
-			if (BobUI_Globals["PROFESSIONS"][i] ~= nil) then
-				numSlots = numSlots + BobUI_Globals["PROFESSIONS"][i]["numSpells"]
-			end
-		end
-
-	end
-
-
-	return numSlots
-end
-
-
 function modifiedClick(spellIndex, button)
 	if ( IsModifiedClick("CHATLINK") ) then
 		if ( MacroFrameText and MacroFrameText:HasFocus() ) then
@@ -49,42 +24,6 @@ function modifiedClick(spellIndex, button)
 			return;
 		end
 	end
-end
-
-function getProfessionOffset(li)
-	local returned = 0
-	local spellCount = 0
-	local numSpells = 0
-	local isFirstOfProfession = false
-
-	local learnedProfessionAbilityLocations = {}
-
-	for i=1,5 do
-		if BobUI_Globals["PROFESSIONS"][i] ~= nil then
-			spellCount = spellCount + BobUI_Globals["PROFESSIONS"][i]["numSpells"]
-			local numSpellsForProfession = BobUI_Globals["PROFESSIONS"][i]["numSpells"]
-
-			for i1=1,numSpellsForProfession do
-				table.insert(learnedProfessionAbilityLocations, i)
-			end
-		end
-	end
-
-
-	if BobUI_Globals["PROFESSIONS"][learnedProfessionAbilityLocations[li]] ~= nil then
-		returned = BobUI_Globals["PROFESSIONS"][learnedProfessionAbilityLocations[li]]["spelloffset"]
-		numSpells = BobUI_Globals["PROFESSIONS"][learnedProfessionAbilityLocations[li]]["numSpells"]
-
-		if learnedProfessionAbilityLocations[li-1] ~= nil then
-			if learnedProfessionAbilityLocations[li-1] ~= learnedProfessionAbilityLocations[li] then
-				isFirstOfProfession = true
-			end
-		else
-			isFirstOfProfession = true
-		end
-	end
-
-	return returned - li + 1 + (isFirstOfProfession and 0 or 1), isFirstOfProfession, learnedProfessionAbilityLocations[li]
 end
 
 function UpdateCooldown(self, slot, slotType)
@@ -116,6 +55,8 @@ function BobUI_spellBookItemData(i)
 	local offset = 0;
 	local numFlyoutSpells = 0
 	local professionIndex = 0
+
+	local _
 			
 	if BobUI_Globals["SPELL_BOOK_TYPE"] == "profession" then
 		offset, isFirstOfProfession, professionIndex = getProfessionOffset(i)
@@ -494,7 +435,7 @@ function updateSpellButtons()
 						end
 					elseif (mBtn == "RightButton" and BobUI_Globals["SPELL_BOOK_TYPE"] == "pet") then
 						
-						wait(0.2, toggleAutocastShine, button, i+offset)
+						BobUI_wait(0.2, toggleAutocastShine, button, i+offset)
 					end
 				end
 			end)
@@ -553,37 +494,6 @@ function updateSpellButtons()
 
 end
 
-local waitTable = {};
-local waitFrame = nil;
-
-function wait(delay, func, ...)
-  if(type(delay)~="number" or type(func)~="function") then
-    return false;
-  end
-  if(waitFrame == nil) then
-    waitFrame = CreateFrame("Frame","WaitFrame", UIParent);
-    waitFrame:SetScript("onUpdate",function (self,elapse)
-      local count = #waitTable;
-      local i = 1;
-      while(i<=count) do
-        local waitRecord = tremove(waitTable,i);
-        local d = tremove(waitRecord,1);
-        local f = tremove(waitRecord,1);
-        local p = tremove(waitRecord,1);
-        if(d>elapse) then
-          tinsert(waitTable,i,{d-elapse,f,p});
-          i = i + 1;
-        else
-          count = count - 1;
-          f(unpack(p));
-        end
-      end
-    end);
-  end
-  tinsert(waitTable,{delay,func,{...}});
-  return true;
-end
-
 function createSpellButtons()
 	if BobUI_Globals["CHARACTER"]["classID"] == nil then return end
 	local button;
@@ -637,8 +547,6 @@ function specButtonsUpdateBorders()
 
 	for i=1,8 do
 		local button = BobUI_specButtons["specButton"..i];
-
-
 
 		if (i == currentSpecID+1) then
 			button.bg:SetColorTexture(GetBorderColor("BorderColorActive"))
@@ -738,7 +646,7 @@ function SpecButton_OnClick(self)
 		BobUI_toggleTabPage(BobTabPage1)
 		local numSpecs = GetNumSpecializationsForClassID(BobUI_Globals["CHARACTER"]["classID"]);
 
-		specs = {}
+		local specs = {}
 
 		table.insert(specs, 1)
 
@@ -775,8 +683,9 @@ function updateSpellBookLabel()
 		BobTabPage1Actives.category:SetText(GetSpellTabInfo(BobUI_Globals["VIEWED_SPELL_BOOK"]))
 	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 6 then
 		BobTabPage1Actives.category:SetText(PET)
+	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 7 then
+		BobTabPage1Actives.category:SetText(TRADE_SKILLS)
 	else
-		--BobTabPage1Actives.category:SetText(TRADE_SKILLS)
 		BobTabPage1Actives.category:SetText()
 	end
 end
@@ -798,13 +707,6 @@ function SpecButton_OnLeave(self)
 	GameTooltip:Hide();
 end
 
-
-function toggleSpellBookSettings()
-	local isShown = BobUI_SettingsFrame:IsShown()
-
-	if isShown then BobUI_SettingsFrame:Hide() else BobUI_SettingsFrame:Show() end
-end
-
 function CliqueShown()
 	if CliqueConfig ~= nil then
 		return CliqueConfig:IsShown()
@@ -815,11 +717,9 @@ end
 
 function BobUI_toggleTabPage(shown)
 	if not InCombatLockdown() then
+		BobTabPage1:Hide()
+		BobTabPage2:Hide()
 		shown:Show()
-		local hidden = nil
-
-		if shown == BobTabPage1 then hidden = BobTabPage2 else hidden = BobTabPage1 end
-
 		BobUI_PlayerTalentFrame:SetPoint("TOPLEFT", shown, "TOPRIGHT", 10, 0)
 
 		if shown == BobTabPage2 then
@@ -830,7 +730,7 @@ function BobUI_toggleTabPage(shown)
 			BobTabPage2:SetWidth(BobTabPage2.nameEditBox:GetWidth() + 18 + BobTabPage2ScrollFrame:GetWidth() + 22)
 			--BobTabPage2ControlButton2:SetPoint("TOPLEFT", BobTabPage2NameEditBox.bg, "TOPRIGHT", 2, 0)
 		end
-		hidden:Hide()
+
 	end
 end
 
@@ -882,49 +782,19 @@ function BobUI_AbilityTab_OnShow(self)
 
 	resizeBackground() 
 
-	MicroButtonPulseStop(TalentMicroButton);
-	if TalentMicroButtonAlert ~= nil then TalentMicroButtonAlert:Hide(); end -- needs fixing for SL.
-	UpdateMicroButtons(); 
-
-	if BobUI_Settings["BackgroundColor"] == nil then BobUI_Settings["BackgroundColor"] = BobUI_Settings_Recommended["BackgroundColor"] end
-
-	for k, v in pairs(BobUI_FRAMES) do
-		for k1, v1 in pairs(v) do
-			if k == "HEADERS" or k == "LABELS" or k == "BODY" then
-				_G[v1]:SetTextColor(BobUI_Settings["TextColor"]["r"], BobUI_Settings["TextColor"]["g"], BobUI_Settings["TextColor"]["b"], BobUI_Settings["TextColor"]["a"])
-			end
-			if k == "HEADERS" then
-				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeHeader"])
-			end
-			if k == "LABELS" then
-				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeLabels"])
-			end
-			if k == "BODY" then
-				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeBody"])
-			end
-			if k == "BODY" then
-				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeBody"])
-			end
-			if k == "BACKGROUND" then
-				_G[v1]:SetColorTexture(BobUI_Settings["BackgroundColor"]["r"], BobUI_Settings["BackgroundColor"]["g"], BobUI_Settings["BackgroundColor"]["b"], BobUI_Settings["BackgroundColor"]["a"])
-			end
-		end
+	if TalentMicroButtonAlert ~= nil then -- needs fixing for SL.
+		MicroButtonPulseStop(TalentMicroButton);
+		TalentMicroButtonAlert:Hide(); 
 	end
 
+	UpdateMicroButtons(); 
+	updateBobUI()
 end
 
 function BobUI_AbilityTab_OnHide(self)
 	if SELECTED_HEART_ESSENCE_SLOT ~= nil then SELECTED_HEART_ESSENCE_SLOT:OnClick() end
 	BobUI_specButtons.specButton6:Show()
 
-end
-
-function toggleSpellBook()
-    if InCombatLockdown() then
-		return
-	else
-		if BobUI_AbilityTab:IsShown() then BobUI_AbilityTab:Hide() else BobUI_AbilityTab:Show() end
-	end
 end
 
 

@@ -18,7 +18,7 @@ function editBoxKeyDown(self, event)
 		
 		self.settingValue = editBoxText
 		self:SetText(editBoxText)
-		applySetting(self)
+		BobUI_applySetting(self)
 		self:ClearFocus()
 
 

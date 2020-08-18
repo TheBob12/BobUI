@@ -174,16 +174,51 @@ function setupColorButton(self)
 end
 
 
-function addFrameToBobUIFrames(frameName, frameType)
-    if frameType ~= nil and frameName ~= nil then
-        table.insert(BobUI_FRAMES[frameType], frameName);
-    end
-end
-
 function displayColoringSettings(frameType)
     
 end
 
-function resizeFrames()
 
+function resizeBobUI() 
+
+end
+
+function updateButtonColorAndSize()
+
+end
+
+function updateTextColorAndSize()
+	for k, v in pairs(BobUI_FRAMES) do
+		for k1, v1 in pairs(v) do
+			if k == "HEADERS" or k == "LABELS" or k == "BODY" then
+				_G[v1]:SetTextColor(BobUI_Settings["TextColor"]["r"], BobUI_Settings["TextColor"]["g"], BobUI_Settings["TextColor"]["b"], BobUI_Settings["TextColor"]["a"])
+			end
+			if k == "HEADERS" then
+				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeHeader"])
+			end
+			if k == "LABELS" then
+				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeLabels"])
+			end
+			if k == "BODY" then
+				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeBody"])
+			end
+			if k == "BODY" then
+				_G[v1]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeBody"])
+			end
+			if k == "BACKGROUND" then
+				_G[v1]:SetColorTexture(BobUI_Settings["BackgroundColor"]["r"], BobUI_Settings["BackgroundColor"]["g"], BobUI_Settings["BackgroundColor"]["b"], BobUI_Settings["BackgroundColor"]["a"])
+			end
+		end
+	end
+end
+
+function updateSeparatorColorAndSize()
+
+end
+
+function updateBobUI() 
+	resizeBobUI()
+	updateSeparatorColorAndSize()
+	updateTextColorAndSize()
+	updateButtonColorAndSize()
 end

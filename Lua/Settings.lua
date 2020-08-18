@@ -81,7 +81,13 @@ function SetupBobUISettings()
 	end
 end
 
-function applySetting(self) 
+function toggleSpellBookSettings()
+	local isShown = BobUI_SettingsFrame:IsShown()
+
+	if isShown then BobUI_SettingsFrame:Hide() else BobUI_SettingsFrame:Show() end
+end
+
+function BobUI_applySetting(self) 
 	BobUI_Settings[self.settingName] = self.settingValue
 
 	if self.settingName == "Scaling" then
