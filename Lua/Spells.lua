@@ -5,9 +5,11 @@ end
 function getCorrectSpellIDForDrag(spellID)
 	
 	if set(53271, 62305, 272682, 264735, 281195, 264667, 272679)[spellID] then
-		spellID = 272651 -- command pet
+		spellID = 272651 -- command pet (some of the spell IDs in the set above, may be wrong. Need to check which ones are the right ones.)
 	elseif set(271045, 270323, 270335)[spellID] then
 		spellID = 259495 -- shrapnel bomb
+	elseif set(119905, 119907, 119910, 119909, 119914)[spellID] then
+		spellID = 119898 -- Command Demon
 	end
 
     return spellID

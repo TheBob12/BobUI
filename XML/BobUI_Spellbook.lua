@@ -259,6 +259,12 @@ function updateSpellButtons()
 		local button = BobTabPage1.buttons[i];
 		button:Hide(); 
 		button.FlyoutArrow:Hide()
+		button.TrainBook:Hide()
+		_G[button:GetName().."RequiredLevelString"]:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeBody"], "OUTLINE")
+		_G[button:GetName().."RequiredLevelString"]:SetTextColor(0.8,0.8,0.8,1)
+		_G[button:GetName().."RequiredLevelString"]:SetText()
+		_G[button:GetName().."IconTexture"]:SetDesaturated(false)
+		_G[button:GetName().."RequiredLevelString"]:Hide()
 
 		if i <= BobUI_Globals["VIEWED_SPELL_BOOK_NUM_SPELLS"] then
 			local offset, isFirstOfProfession, isPassive, isOnActionbar, texture, spellType, numFlyoutSpells, actionID, spellName, subSpellName, spellID, spellLevel, autoCastAllowed, autoCastEnabled, professionIndex = BobUI_spellBookItemData(i)
@@ -277,27 +283,21 @@ function updateSpellButtons()
 			
 			--- change this at some point... I guess
 
-			_G[button:GetName().."RequiredLevelString"]:SetFont("Fonts\\ARIALN.ttf", BobUI_Settings["FontSizeBody"], "OUTLINE")
-			_G[button:GetName().."RequiredLevelString"]:SetTextColor(0.8,0.8,0.8,1)
 
-			if not (spellType == "FUTURESPELL") and not isDisabled then
-					button.TrainBook:Hide()
-					_G[button:GetName().."IconTexture"]:SetDesaturated(false)
-					_G[button:GetName().."RequiredLevelString"]:Hide()				
-			else
-				if spellType == "FUTURESPELL" then
-					missingOnActionBar = false
+			
+			if spellType == "FUTURESPELL" then
+				missingOnActionBar = false
 
-					if (spellLevel and spellLevel > UnitLevel("player") or isDisabled) then
-						_G[button:GetName().."RequiredLevelString"]:SetText("Lv "..spellLevel)
-						_G[button:GetName().."RequiredLevelString"]:Show()
-					else
-						button.TrainBook:Show()
-					end
-
-					_G[button:GetName().."IconTexture"]:SetDesaturated(true)
+				if (spellLevel and spellLevel > UnitLevel("player") or isDisabled) then
+					_G[button:GetName().."RequiredLevelString"]:SetText("Lv "..spellLevel)
+					_G[button:GetName().."RequiredLevelString"]:Show()
+				else
+					button.TrainBook:Show()
 				end
+
+				_G[button:GetName().."IconTexture"]:SetDesaturated(true)
 			end
+				
 			if missingOnActionBar then button.SpellHighlightTexture:Show() else button.SpellHighlightTexture:Hide() end
 
 			local newLinePassives = (math.fmod(j-1,newLineAt) == 0)
@@ -466,7 +466,7 @@ function updateSpellButtons()
 					end
 
 					button:SetSize(BobUI_Settings["SpellIconSize"] * 1.25, BobUI_Settings["SpellIconSize"] * 1.25)
-					button.profText:SetFont("Fonts\\ARIALN.ttf", BobUI_Settings["FontSizeBody"])
+					button.profText:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeBody"])
 					button.profText:SetText(BobUI_Globals["PROFESSIONS"][professionIndex]["name"] .. "\n" .. BobUI_Globals["PROFESSIONS"][professionIndex]["rank"] .. "/" .. BobUI_Globals["PROFESSIONS"][professionIndex]["maxRank"])
 					button.profText:SetPoint("LEFT", button, "RIGHT", BobUI_Settings["SpellIconSize"] + 8, 0);
 					button.profText:Show()
@@ -764,7 +764,7 @@ function resizeBackground()
 	local frameWidth = (BobTabPage1:IsShown() and BobTabPage1:GetWidth() or BobTabPage2:GetWidth()) + 10 + BobUI_PlayerTalentFrame:GetWidth() + 10 + BobUI_PlayerTalentFrameTalentsBobUI_PvpTalentFrame:GetWidth() + (showHeartEssences() and BobUI_HeartEssences:GetWidth() or 0) + 30
 	
 	
-	BobUI_TabTitle.text:SetFont("Fonts/ARIALN.TTF", BobUI_Settings["FontSizeHeader"])
+	BobUI_TabTitle.text:SetFont(BobUI_Settings["FontType"], BobUI_Settings["FontSizeHeader"])
 
 	local titleHeight = max(20, BobUI_Settings["FontSizeHeader"])
 

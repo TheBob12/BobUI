@@ -30,11 +30,6 @@ BobUI_FRAMES = { -- reference, for quickly changing settings.
 -- Not in use currently.
 BobUI_SizeModifiers = {}
 
-
-function BobUI_updateSize()
-	
-end
-
 function GetBorderColor(borderColorType)
     if borderColorType == nil then borderColorType = "BorderColorActive" end
 
