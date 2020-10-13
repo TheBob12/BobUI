@@ -15,8 +15,10 @@ BobUI_Globals = {
 		["DAMAGER"] = DAMAGER,
 		["TANK"] = TANK
 	},
-	["LOADED"] = false
+	["LOADED"] = false,
+	["PTR"] = false
 }
+
 
 BobUI_Settings_Recommended = {
 	["BorderSize"] = 2,
@@ -135,4 +137,6 @@ function GetCurrentCharacterInfo()
 			["a"] = 0.4
 		}
 	}
+
+	if TalentMicroButtonAlert == nil then BobUI_Globals["PTR"] = true end -- testing against a variable that that exists in BFA, but not PTR
 end

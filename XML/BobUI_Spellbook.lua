@@ -215,9 +215,9 @@ function updateSpellButtons()
 
 
 
-	if BobUI_Globals["VIEWED_SPELL_BOOK"] == 6 then 
+	if BobUI_Globals["VIEWED_SPELL_BOOK"] == 7 then 
 		BobUI_Globals["SPELL_BOOK_TYPE"] = "pet"
-	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 7 then 
+	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 8 then 
 		BobUI_Globals["SPELL_BOOK_TYPE"] = "profession"
 	else
 		BobUI_Globals["SPELL_BOOK_TYPE"] = "spell"
@@ -494,6 +494,15 @@ function updateSpellButtons()
 
 end
 
+function BobUI_GetNumSpellsForSpellBook(tabIndex)
+	local specName, texture, offset, numSpells = GetSpellTabInfo(tabIndex)
+
+	if BobUI_Globals["VIEWED_SPELL_BOOK"] == 7 then return GetNumSpellsForSpellBook(6) end
+	if tabIndex > 7 then return GetNumSpellsForSpellBook(7) end
+
+	return numSpells
+end
+
 function createSpellButtons()
 	if BobUI_Globals["CHARACTER"]["classID"] == nil then return end
 	local button;
@@ -521,8 +530,8 @@ function createSpellButtons()
 
 	local numButtonsToCreate = 0
 
-	for i=2, numSpecs+1 do
-		if GetNumSpellsForSpellBook(i) > numButtonsToCreate then numButtonsToCreate = GetNumSpellsForSpellBook(i) end
+	for i=1, numSpecs+2 do
+		if BobUI_GetNumSpellsForSpellBook(i) > numButtonsToCreate then numButtonsToCreate = BobUI_GetNumSpellsForSpellBook(i) end
 	end
 
 	-- create spell buttons
@@ -545,7 +554,7 @@ function specButtonsUpdateBorders()
 
 	local lastShownButton = nil
 
-	for i=1,8 do
+	for i=0,8 do
 		local button = BobUI_specButtons["specButton"..i];
 
 		if (i == currentSpecID+1) then
@@ -581,14 +590,21 @@ function SpecButton_OnShow(self)
 	local numSpecs = GetNumSpecializationsForClassID(BobUI_Globals["CHARACTER"]["classID"]);
 	
 
-	local numTabs = 2 + numSpecs + (PetHasSpellbook() and 1 or 0) -- general tab & crafting tab + num specs + pet spells?
+	local numTabs = 3 + numSpecs + (PetHasSpellbook() and 1 or 0) -- general tab, class tab & crafting tab + num specs + pet spells?
 
 
 	self:SetSize(BobUI_Settings["TabIconSize"] + (BobUI_Settings["BorderSize"] * 2), BobUI_Settings["TabIconSize"] + (BobUI_Settings["BorderSize"] * 2))
 	self.specIcon:SetSize(BobUI_Settings["TabIconSize"], BobUI_Settings["TabIconSize"])
 	self:Show();
+	
+	if self:GetID() == 0 then
+		
+			self.specIcon:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES");
+			self.specIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[BobUI_Globals["CHARACTER"]["classFileName"]]))
+			self.roleIcon:Hide();
+			self.tooltip = GetSpellTabInfo(select(2, 1))
 
-	if self:GetID() == 1 then
+	elseif self:GetID() == 1 then
 
 			self.specIcon:SetTexture(136830)
 			self.roleIcon:Hide();
@@ -611,7 +627,7 @@ function SpecButton_OnShow(self)
 			self.specIcon:SetTexture("Interface/Icons/ABILITY_HUNTER_SICKEM");
 			self.roleIcon:Hide();
 		else
-			if BobUI_Globals["VIEWED_SPELL_BOOK"] == 6 then BobUI_Globals["VIEWED_SPELL_BOOK"] = 2 end
+			if BobUI_Globals["VIEWED_SPELL_BOOK"] == 7 then BobUI_Globals["VIEWED_SPELL_BOOK"] = 2 end
 			self:Hide();
 		end
 	elseif self:GetID() == 7 then
@@ -623,7 +639,7 @@ function SpecButton_OnShow(self)
 			self.tooltip = TALENTS
 	end
 
-		BobUI_Globals["VIEWED_SPELL_BOOK_NUM_SPELLS"] = GetNumSpellsForSpellBook(BobUI_Globals["VIEWED_SPELL_BOOK"])
+		BobUI_Globals["VIEWED_SPELL_BOOK_NUM_SPELLS"] = BobUI_GetNumSpellsForSpellBook(BobUI_Globals["VIEWED_SPELL_BOOK"])
 
 		specButtonsUpdateBorders()
 
@@ -649,24 +665,25 @@ function SpecButton_OnClick(self)
 		local specs = {}
 
 		table.insert(specs, 1)
+		specs[0] = 2
 
-		for i=2, numSpecs+1 do -- current specialization is always number 2 spell book.. so need to rearrange books
-			if (i < (GetSpecialization()+1)) then
+		for i=3, numSpecs+2 do -- current specialization is always number 3 spell book.. so need to rearrange books
+			if (i < (GetSpecialization()+2)) then
 				table.insert(specs, i + 1)
-			elseif (i > (GetSpecialization()+1)) then
+			elseif (i > (GetSpecialization()+2)) then
 				table.insert(specs, i)
 			else
-				table.insert(specs, 2)
+				table.insert(specs, 3)
 			end
 		end
 
 		if self:GetID() <= 5 then 
 			BobUI_Globals["VIEWED_SPELL_BOOK"] = specs[self:GetID()]
 		else 
-			BobUI_Globals["VIEWED_SPELL_BOOK"] = self:GetID()
+			BobUI_Globals["VIEWED_SPELL_BOOK"] = self:GetID() + 1
 		end
 
-		BobUI_Globals["VIEWED_SPELL_BOOK_NUM_SPELLS"] = GetNumSpellsForSpellBook(BobUI_Globals["VIEWED_SPELL_BOOK"])
+		BobUI_Globals["VIEWED_SPELL_BOOK_NUM_SPELLS"] = BobUI_GetNumSpellsForSpellBook(BobUI_Globals["VIEWED_SPELL_BOOK"])
 		BobUI_Globals["CURRENT_FLYOUT"] = nil
 
 		createSpellButtons()
@@ -679,11 +696,11 @@ function SpecButton_OnClick(self)
 end
 
 function updateSpellBookLabel()
-	if BobUI_Globals["VIEWED_SPELL_BOOK"] < 6 then
+	if BobUI_Globals["VIEWED_SPELL_BOOK"] < 7 then
 		BobTabPage1Actives.category:SetText(GetSpellTabInfo(BobUI_Globals["VIEWED_SPELL_BOOK"]))
-	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 6 then
-		BobTabPage1Actives.category:SetText(PET)
 	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 7 then
+		BobTabPage1Actives.category:SetText(PET)
+	elseif BobUI_Globals["VIEWED_SPELL_BOOK"] == 8 then
 		BobTabPage1Actives.category:SetText(TRADE_SKILLS)
 	else
 		BobTabPage1Actives.category:SetText()

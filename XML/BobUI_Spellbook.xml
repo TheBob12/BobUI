@@ -375,9 +375,14 @@
 					<Anchor point="TOPRIGHT" relativeTo="BobUI_TabTitle" relativePoint="BOTTOMRIGHT" x="-20" y="0"/>
 				</Anchors>
 				<Frames>
-					<Button name="SpecButton1" inherits="BobUI_SpecButtonTemplate" id="1" parentKey="specButton1">
+					<Button name="SpecButton0" inherits="BobUI_SpecButtonTemplate" id="0" parentKey="specButton0">
 						<Anchors>
 							<Anchor point="LEFT" x="0" y="0" />
+						</Anchors>
+					</Button>
+					<Button name="SpecButton1" inherits="BobUI_SpecButtonTemplate" id="1" parentKey="specButton1">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="SpecButton0" relativePoint="TOPRIGHT" x="5" y="0" />
 						</Anchors>
 					</Button>
 					<Button name="SpecButton2" inherits="BobUI_SpecButtonTemplate" id="2" parentKey="specButton2">
