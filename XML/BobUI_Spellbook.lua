@@ -598,17 +598,17 @@ function SpecButton_OnShow(self)
 	self:Show();
 	
 	if self:GetID() == 0 then
-		
+			local spellBookName, spellBookTexture = GetSpellTabInfo(2)
 			self.specIcon:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES");
 			self.specIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[BobUI_Globals["CHARACTER"]["classFileName"]]))
 			self.roleIcon:Hide();
-			self.tooltip = GetSpellTabInfo(select(2, 1))
+			self.tooltip = spellBookName
 
 	elseif self:GetID() == 1 then
-
+		local spellBookName, spellBookTexture = GetSpellTabInfo(1)
 			self.specIcon:SetTexture(136830)
 			self.roleIcon:Hide();
-			self.tooltip = GetSpellTabInfo(select(1, 1))
+			self.tooltip = spellBookName
 
 	elseif self:GetID() <= 1+numSpecs then
 			local specID, specName, specDescription, specIcon, specRole, mainStat = GetSpecializationInfo(self:GetID()-1) 
