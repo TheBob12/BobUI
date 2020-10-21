@@ -1,4 +1,4 @@
-## Interface: 80400
+## Interface: 90001
 ## Title: Bob UI
 ## Notes: Replaces your spell book and talent frames with one single frame.
 ## Author: The Bob

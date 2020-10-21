@@ -250,7 +250,7 @@ function updateSpellButtons()
 
 	local LastFirstOfProfession = nil
 
-	BobTabPage1Passives:SetHeight(0)
+	BobTabPage1Passives:SetHeight(40)
 	BobTabPage1Actives:SetHeight(0)
 	BobTabPage1PetControlsAndFlyouts:SetHeight(0)
 	BobTabPage1FlyoutButtons:SetHeight(40)
@@ -491,7 +491,9 @@ function updateSpellButtons()
 		end
 	end
 
-
+	if BobTabPage1Passives:GetHeight() > 40 then
+		BobTabPage1Passives:SetHeight(BobTabPage1Passives:GetHeight() - 40)
+	end
 end
 
 function BobUI_GetNumSpellsForSpellBook(tabIndex)
